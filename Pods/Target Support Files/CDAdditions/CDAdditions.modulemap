@@ -1,0 +1,6 @@
+framework module CDAdditions {
+  umbrella header "CDAdditions-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -13,6 +13,7 @@ target 'CDCamare' do
     pod 'MBProgressHUD'
     pod 'RxSwift', '~> 4.0'
     pod 'RxCocoa', '~> 4.0'
+    pod 'CDAdditions'
 
 	post_install do |installer|
 	  installer.pods_project.targets.each do |target|

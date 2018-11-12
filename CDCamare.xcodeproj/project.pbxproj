@@ -14,14 +14,9 @@
 		DD15CDFC2122B42E0054649E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDFA2122B42E0054649E /* LaunchScreen.storyboard */; };
 		DD15CE072122B42F0054649E /* CDCamareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE062122B42F0054649E /* CDCamareTests.swift */; };
 		DD15CE122122B42F0054649E /* CDCamareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE112122B42F0054649E /* CDCamareUITests.swift */; };
-		DD15CE322122E7B80054649E /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE292122E7B70054649E /* UIViewExtensions.swift */; };
-		DD15CE332122E7B80054649E /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE2A2122E7B70054649E /* StringExtensions.swift */; };
-		DD15CE342122E7B80054649E /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE2B2122E7B70054649E /* UIViewControllerExtensions.swift */; };
-		DD15CE352122E7B80054649E /* UINavigationControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE2C2122E7B70054649E /* UINavigationControllerExtensions.swift */; };
-		DD15CE372122E7B80054649E /* UIDeviceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE2E2122E7B80054649E /* UIDeviceExtensions.swift */; };
-		DD15CE382122E7B80054649E /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE2F2122E7B80054649E /* UIColorExtensions.swift */; };
-		DD15CE392122E7B80054649E /* DispatchQueueExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE302122E7B80054649E /* DispatchQueueExtensions.swift */; };
-		DD15CE3A2122E7B80054649E /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE312122E7B80054649E /* UIFontExtensions.swift */; };
+		DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */; };
+		DD628EAB2199AEFA000B247F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAA2199AEFA000B247F /* RootViewController.swift */; };
+		DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAC2199AF6A000B247F /* MacroFile.swift */; };
 		DEE84305E0A52811D10FA71D /* Pods_CDCamare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B8B7E7F6D0249977B5993 /* Pods_CDCamare.framework */; };
 /* End PBXBuildFile section */
 
@@ -58,14 +53,11 @@
 		DD15CE0D2122B42F0054649E /* CDCamareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CDCamareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CE112122B42F0054649E /* CDCamareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCamareUITests.swift; sourceTree = "<group>"; };
 		DD15CE132122B42F0054649E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DD15CE292122E7B70054649E /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
-		DD15CE2A2122E7B70054649E /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
-		DD15CE2B2122E7B70054649E /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
-		DD15CE2C2122E7B70054649E /* UINavigationControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtensions.swift; sourceTree = "<group>"; };
-		DD15CE2E2122E7B80054649E /* UIDeviceExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDeviceExtensions.swift; sourceTree = "<group>"; };
-		DD15CE2F2122E7B80054649E /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
-		DD15CE302122E7B80054649E /* DispatchQueueExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchQueueExtensions.swift; sourceTree = "<group>"; };
-		DD15CE312122E7B80054649E /* UIFontExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
+		DD628E9F2199AD75000B247F /* CDCamare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CDCamare-Bridging-Header.h"; sourceTree = "<group>"; };
+		DD628EA42199AE09000B247F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationViewController.swift; sourceTree = "<group>"; };
+		DD628EAA2199AEFA000B247F /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		DD628EAC2199AF6A000B247F /* MacroFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroFile.swift; sourceTree = "<group>"; };
 		E55F88359B4626F1BB68B71C /* Pods-CDCamare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDCamare.release.xcconfig"; path = "Pods/Target Support Files/Pods-CDCamare/Pods-CDCamare.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,7 +120,10 @@
 		DD15CDF02122B42D0054649E /* CDCamare */ = {
 			isa = PBXGroup;
 			children = (
-				DD15CE282122E77D0054649E /* Extensions */,
+				DD628EA62199AE74000B247F /* Common */,
+				DD628EA52199AE5F000B247F /* Home */,
+				DD628E9F2199AD75000B247F /* CDCamare-Bridging-Header.h */,
+				DD628EA42199AE09000B247F /* PrefixHeader.pch */,
 				DD15CDF12122B42D0054649E /* AppDelegate.swift */,
 				DD15CDF32122B42D0054649E /* ViewController.swift */,
 				DD15CDF52122B42D0054649E /* Main.storyboard */,
@@ -157,19 +152,29 @@
 			path = CDCamareUITests;
 			sourceTree = "<group>";
 		};
-		DD15CE282122E77D0054649E /* Extensions */ = {
+		DD628EA52199AE5F000B247F /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				DD15CE2F2122E7B80054649E /* UIColorExtensions.swift */,
-				DD15CE2B2122E7B70054649E /* UIViewControllerExtensions.swift */,
-				DD15CE292122E7B70054649E /* UIViewExtensions.swift */,
-				DD15CE2A2122E7B70054649E /* StringExtensions.swift */,
-				DD15CE312122E7B80054649E /* UIFontExtensions.swift */,
-				DD15CE2E2122E7B80054649E /* UIDeviceExtensions.swift */,
-				DD15CE302122E7B80054649E /* DispatchQueueExtensions.swift */,
-				DD15CE2C2122E7B70054649E /* UINavigationControllerExtensions.swift */,
+				DD628EAA2199AEFA000B247F /* RootViewController.swift */,
 			);
-			path = Extensions;
+			path = Home;
+			sourceTree = "<group>";
+		};
+		DD628EA62199AE74000B247F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				DD628EAC2199AF6A000B247F /* MacroFile.swift */,
+				DD628EA72199AE82000B247F /* Views */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		DD628EA72199AE82000B247F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		F3598838737E748F73E41CE1 /* Pods */ = {
@@ -251,6 +256,7 @@
 				TargetAttributes = {
 					DD15CDED2122B42D0054649E = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1010;
 					};
 					DD15CE012122B42F0054649E = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -317,20 +323,24 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CDCamare/Pods-CDCamare-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CDAdditions/CDAdditions.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CDAdditions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -365,16 +375,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD15CE382122E7B80054649E /* UIColorExtensions.swift in Sources */,
-				DD15CE332122E7B80054649E /* StringExtensions.swift in Sources */,
-				DD15CE372122E7B80054649E /* UIDeviceExtensions.swift in Sources */,
-				DD15CE352122E7B80054649E /* UINavigationControllerExtensions.swift in Sources */,
-				DD15CE3A2122E7B80054649E /* UIFontExtensions.swift in Sources */,
 				DD15CDF42122B42D0054649E /* ViewController.swift in Sources */,
-				DD15CE342122E7B80054649E /* UIViewControllerExtensions.swift in Sources */,
-				DD15CE322122E7B80054649E /* UIViewExtensions.swift in Sources */,
 				DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */,
-				DD15CE392122E7B80054649E /* DispatchQueueExtensions.swift in Sources */,
+				DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */,
+				DD628EAB2199AEFA000B247F /* RootViewController.swift in Sources */,
+				DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,6 +553,7 @@
 			baseConfigurationReference = 323DA99B1363FD139E2EDC9A /* Pods-CDCamare.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77VA832VG5;
 				INFOPLIST_FILE = CDCamare/Info.plist;
@@ -557,6 +563,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = NONE.CDCamare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -567,6 +575,7 @@
 			baseConfigurationReference = E55F88359B4626F1BB68B71C /* Pods-CDCamare.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77VA832VG5;
 				INFOPLIST_FILE = CDCamare/Info.plist;
@@ -576,6 +585,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = NONE.CDCamare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
