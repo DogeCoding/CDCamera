@@ -55,7 +55,7 @@ const NSString *CDAdditionsIsCapturing = @"CDAdditionsIsCapturing";
 
 @implementation UIScrollView (CDScreenShot)
 
-- (void)cdContentCaptureWithCompletionHandler:(CompletionHandler)completionHandler {
+- (void)cdContentCaptureWithFinishBlock:(FinishBlock)finishBlock {
     self.isCapturing = YES;
     
     UIView *snapShotView = [self snapshotViewAfterScreenUpdates:YES];
@@ -83,11 +83,11 @@ const NSString *CDAdditionsIsCapturing = @"CDAdditionsIsCapturing";
         
         self.isCapturing = NO;
         
-        completionHandler(image);
+        finishBlock(image);
     }];
 }
 
-- (void)cdContentScrollCaptureWithProgressBlock:(ProgressBlock)progressBlock CompletionHandler:(CompletionHandler)complertionHandler {
+- (void)cdContentScrollCaptureWithProgressBlock:(ProgressBlock)progressBlock finishBlock:(FinishBlock)finishBlock {
     self.isCapturing = YES;
     
     UIView *snapShotView = [self snapshotViewAfterScreenUpdates:YES];
@@ -110,11 +110,11 @@ const NSString *CDAdditionsIsCapturing = @"CDAdditionsIsCapturing";
         [self setContentOffset:bakOffset animated:NO];
         [snapShotView removeFromSuperview];
         self.isCapturing = NO;
-        complertionHandler(capturedImage);
+        finishBlock(capturedImage);
     }];
 }
 
-- (void)cdRenderImageView:(CompletionHandler)completionHandler {
+- (void)cdRenderImageView:(FinishBlock)finishBlock {
     UIView *cdTempRenderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.contentSize.width, self.contentSize.height)];
     [self removeFromSuperview];
     [cdTempRenderView addSubview:self];
@@ -138,7 +138,7 @@ const NSString *CDAdditionsIsCapturing = @"CDAdditionsIsCapturing";
         
         [NSObject cd_swizzleInstanceMethodWithOriginSel:@selector(cdSetFrame:) swizzledSel:@selector(setFrame:)];
         
-        completionHandler(capturedImage);
+        finishBlock(capturedImage);
     });
 }
 

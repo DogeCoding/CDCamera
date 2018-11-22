@@ -8,17 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
-typedef void(^CompletionHandler) (UIImage *image);
-typedef void(^ProgressBlock)(NSInteger current, NSInteger total);
-
 @interface UIScrollView (CDScreenShot)
 
-- (void)cdContentCaptureWithCompletionHandler:(CompletionHandler)completionHandler;
+typedef void(^FinishBlock) (UIImage *image);
+typedef void(^ProgressBlock)(NSInteger current, NSInteger total);
 
-- (void)cdContentScrollCaptureWithProgressBlock:(ProgressBlock)progressBlock CompletionHandler:(CompletionHandler)complertionHandler;
+- (void)cdContentCaptureWithFinishBlock:(FinishBlock)finishBlock;
+
+- (void)cdContentScrollCaptureWithProgressBlock:(ProgressBlock)progressBlock finishBlock:(FinishBlock)finishBlock;
 
 @end
-
-NS_ASSUME_NONNULL_END

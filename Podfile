@@ -14,6 +14,7 @@ target 'CDCamare' do
     pod 'RxSwift', '~> 4.0'
     pod 'RxCocoa', '~> 4.0'
     pod 'CDAdditions'
+    pod 'FLEX', '~> 2.0', :configurations => ['Debug']
 
 	post_install do |installer|
 	  installer.pods_project.targets.each do |target|

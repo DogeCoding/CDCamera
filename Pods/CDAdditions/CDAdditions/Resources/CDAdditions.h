@@ -13,10 +13,14 @@
 #import "CDCoordinateAdditions.h"
 #import "NSObject+CDAdditions.h"
 #import "NSString+CDAdditions.h"
+#import "UIAlertController+CDAdditions.h"
+#import "UIApplication+CDAdditions.h"
 #import "UIColor+CDAdditions.h"
 #import "UIDevice+CDAdditions.h"
 #import "UIFont+CDAdditions.h"
 #import "UIView+CDAdditions.h"
+#import "UIViewController+CDAdditions.h"
+#import "UIScrollView+CDScreenShot.h"
 #import "EXTScope.h"
 
 

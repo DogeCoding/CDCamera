@@ -29,7 +29,7 @@
 
 #define ScreenWidth [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
-#define SCreenScale (1.0/([UIScreen mainScreen].scale))
+#define ScreenScale (1.0/([UIScreen mainScreen].scale))
 
 #pragma mark --- Memory ---
 

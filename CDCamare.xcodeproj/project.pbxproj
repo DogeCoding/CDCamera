@@ -8,15 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CDF12122B42D0054649E /* AppDelegate.swift */; };
-		DD15CDF42122B42D0054649E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CDF32122B42D0054649E /* ViewController.swift */; };
 		DD15CDF72122B42D0054649E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF52122B42D0054649E /* Main.storyboard */; };
 		DD15CDF92122B42E0054649E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF82122B42E0054649E /* Assets.xcassets */; };
 		DD15CDFC2122B42E0054649E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDFA2122B42E0054649E /* LaunchScreen.storyboard */; };
 		DD15CE072122B42F0054649E /* CDCamareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE062122B42F0054649E /* CDCamareTests.swift */; };
 		DD15CE122122B42F0054649E /* CDCamareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE112122B42F0054649E /* CDCamareUITests.swift */; };
+		DD2F83D221A698E300345D1E /* HomeCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2F83D121A698E300345D1E /* HomeCameraViewController.swift */; };
 		DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */; };
 		DD628EAB2199AEFA000B247F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAA2199AEFA000B247F /* RootViewController.swift */; };
 		DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAC2199AF6A000B247F /* MacroFile.swift */; };
+		DD628EB7219AF92D000B247F /* BaseCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EB6219AF92D000B247F /* BaseCameraViewController.swift */; };
+		DD79B5C021A5427200003C92 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD79B5BF21A5427200003C92 /* Helper.swift */; };
+		DDA53A1F21A64A4E007986D8 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA53A1E21A64A4E007986D8 /* AuthenticationHelper.swift */; };
 		DEE84305E0A52811D10FA71D /* Pods_CDCamare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B8B7E7F6D0249977B5993 /* Pods_CDCamare.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +45,6 @@
 		582B8B7E7F6D0249977B5993 /* Pods_CDCamare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CDCamare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CDEE2122B42D0054649E /* CDCamare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDCamare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CDF12122B42D0054649E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DD15CDF32122B42D0054649E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		DD15CDF62122B42D0054649E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DD15CDF82122B42E0054649E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD15CDFB2122B42E0054649E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -53,11 +55,15 @@
 		DD15CE0D2122B42F0054649E /* CDCamareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CDCamareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CE112122B42F0054649E /* CDCamareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCamareUITests.swift; sourceTree = "<group>"; };
 		DD15CE132122B42F0054649E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DD2F83D121A698E300345D1E /* HomeCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCameraViewController.swift; sourceTree = "<group>"; };
 		DD628E9F2199AD75000B247F /* CDCamare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CDCamare-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD628EA42199AE09000B247F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationViewController.swift; sourceTree = "<group>"; };
 		DD628EAA2199AEFA000B247F /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		DD628EAC2199AF6A000B247F /* MacroFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroFile.swift; sourceTree = "<group>"; };
+		DD628EB6219AF92D000B247F /* BaseCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCameraViewController.swift; sourceTree = "<group>"; };
+		DD79B5BF21A5427200003C92 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		DDA53A1E21A64A4E007986D8 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
 		E55F88359B4626F1BB68B71C /* Pods-CDCamare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDCamare.release.xcconfig"; path = "Pods/Target Support Files/Pods-CDCamare/Pods-CDCamare.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -125,7 +131,6 @@
 				DD628E9F2199AD75000B247F /* CDCamare-Bridging-Header.h */,
 				DD628EA42199AE09000B247F /* PrefixHeader.pch */,
 				DD15CDF12122B42D0054649E /* AppDelegate.swift */,
-				DD15CDF32122B42D0054649E /* ViewController.swift */,
 				DD15CDF52122B42D0054649E /* Main.storyboard */,
 				DD15CDF82122B42E0054649E /* Assets.xcassets */,
 				DD15CDFA2122B42E0054649E /* LaunchScreen.storyboard */,
@@ -156,6 +161,8 @@
 			isa = PBXGroup;
 			children = (
 				DD628EAA2199AEFA000B247F /* RootViewController.swift */,
+				DD628EB6219AF92D000B247F /* BaseCameraViewController.swift */,
+				DD2F83D121A698E300345D1E /* HomeCameraViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -164,6 +171,8 @@
 			isa = PBXGroup;
 			children = (
 				DD628EAC2199AF6A000B247F /* MacroFile.swift */,
+				DD79B5BF21A5427200003C92 /* Helper.swift */,
+				DDA53A1E21A64A4E007986D8 /* AuthenticationHelper.swift */,
 				DD628EA72199AE82000B247F /* Views */,
 			);
 			path = Common;
@@ -324,6 +333,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CDCamare/Pods-CDCamare-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CDAdditions/CDAdditions.framework",
+				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -336,6 +346,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CDAdditions.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -375,11 +386,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD15CDF42122B42D0054649E /* ViewController.swift in Sources */,
 				DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */,
+				DD79B5C021A5427200003C92 /* Helper.swift in Sources */,
+				DD2F83D221A698E300345D1E /* HomeCameraViewController.swift in Sources */,
+				DD628EB7219AF92D000B247F /* BaseCameraViewController.swift in Sources */,
 				DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */,
 				DD628EAB2199AEFA000B247F /* RootViewController.swift in Sources */,
 				DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */,
+				DDA53A1F21A64A4E007986D8 /* AuthenticationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,15 +568,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77VA832VG5;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CDCamare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = NONE.CDCamare;
+				PRODUCT_BUNDLE_IDENTIFIER = codingdoge.appID.CDCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -576,15 +593,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77VA832VG5;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = CDCamare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = NONE.CDCamare;
+				PRODUCT_BUNDLE_IDENTIFIER = codingdoge.appID.CDCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
