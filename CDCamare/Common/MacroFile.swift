@@ -43,3 +43,13 @@ func dispatch_safe_main_async(_ completionHandler: @escaping () -> ()) {
         }
     }
 }
+
+func OnMainThreadAsync(_ completionHandler: @escaping () -> ()) {
+    if Thread.isMainThread {
+        completionHandler()
+    } else {
+        DispatchQueue.main.async {
+            completionHandler()
+        }
+    }
+}

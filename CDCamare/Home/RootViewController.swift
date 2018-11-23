@@ -58,7 +58,7 @@ class RootViewController: UIViewController {
         AuthenticationHelper.camera {
             AuthenticationHelper.photo {
                 dispatch_safe_main_async {
-                    let vc = BaseCameraViewController()
+                    let vc = HomeCameraViewController()
                     self.navigationController?.pushViewController(vc, animated: false)
                 }
             }
