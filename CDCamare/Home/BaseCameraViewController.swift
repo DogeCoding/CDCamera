@@ -170,8 +170,8 @@ class BaseCameraViewController: UIViewController {
         let lineWidth: CGFloat = 1
         gridLine(withFrame: CGRect(x: (view.width - 2*lineWidth)/3 , y: 0, width: lineWidth, height: layerHeight))
         gridLine(withFrame: CGRect(x: (view.width - 2*lineWidth)/3*2.0 + lineWidth, y: 0, width: lineWidth, height: layerHeight))
-        gridLine(withFrame: CGRect(x: 0, y: (view.height - 2*lineWidth)/3, width: view.width, height: lineWidth))
-        gridLine(withFrame: CGRect(x: 0, y: (view.height - 2*lineWidth)/3*2.0, width: lineWidth, height: layerHeight))
+        gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2*lineWidth)/3, width: view.width, height: lineWidth))
+        gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2*lineWidth)/3*2.0, width: view.width, height: lineWidth))
         
         view.layer.addSublayer(gridLayer!)
     }
