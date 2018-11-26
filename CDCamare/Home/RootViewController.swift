@@ -22,7 +22,14 @@ class RootViewController: UIViewController {
         setupFlexBtn()
         #endif
         
-        setupCameraBtn()
+        cameraBtn.width = 150
+        cameraBtn.center = view.center
+        testButton.width = 150
+        testButton.top = cameraBtn.bottom + 20
+        testButton.centerX = view.centerX
+        
+        view.addSubview(cameraBtn)
+        view.addSubview(testButton)
     }
     
     fileprivate func setupFlexBtn() {
@@ -38,17 +45,25 @@ class RootViewController: UIViewController {
         view.addSubview(flexBtn)
     }
     
-    fileprivate func setupCameraBtn() {
+    fileprivate var cameraBtn: UIButton = {
         let cameraBtn = UIButton()
         cameraBtn.backgroundColor = UIColorFromRGB(rgbValue: 0x2E2F28)
         cameraBtn.setTitle("Camera", for: .normal)
         cameraBtn.setTitleColor(UIColorFromRGB(rgbValue: 0x72CE34), for: .normal)
         cameraBtn.addTarget(self, action: #selector(cameraAction), for: .touchUpInside)
         cameraBtn.sizeToFit()
-        cameraBtn.width = 150
-        cameraBtn.center = view.center
-        view.addSubview(cameraBtn)
-    }
+        return cameraBtn
+    }()
+    
+    fileprivate var testButton: UIButton = {
+        let cameraBtn = UIButton()
+        cameraBtn.backgroundColor = UIColorFromRGB(rgbValue: 0x2E2F28)
+        cameraBtn.setTitle("Test", for: .normal)
+        cameraBtn.setTitleColor(UIColorFromRGB(rgbValue: 0x72CE34), for: .normal)
+        cameraBtn.addTarget(self, action: #selector(testAction), for: .touchUpInside)
+        cameraBtn.sizeToFit()
+        return cameraBtn
+    }()
     
     @objc fileprivate func flexAction() {
         FLEXManager.shared()?.showExplorer()
@@ -65,4 +80,8 @@ class RootViewController: UIViewController {
         }
     }
     
+    @objc fileprivate func testAction() {
+        let vc = UIImagePickerController()
+        navigationController?.pushViewController(vc, animated: false)
+    }
 }

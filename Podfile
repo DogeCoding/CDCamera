@@ -15,6 +15,8 @@ target 'CDCamare' do
     pod 'RxCocoa', '~> 4.0'
     pod 'CDAdditions'
     pod 'FLEX', '~> 2.0', :configurations => ['Debug']
+    pod 'MBProgressHUD', '~> 1.1.0'
+    pod 'CRToast', '~> 0.0.7'
 
 	post_install do |installer|
 	  installer.pods_project.targets.each do |target|

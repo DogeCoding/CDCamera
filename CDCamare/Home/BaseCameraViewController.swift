@@ -22,6 +22,11 @@ class BaseCameraViewController: UIViewController {
     
     var videoWidth: CGFloat = 480
     var videoHeight: CGFloat = 640
+    var videoScale: CGFloat {
+        return videoHeight / videoWidth
+    }
+    
+    var isFrontCamera: Bool = false
     
     var isEableScale: Bool {
         set {
@@ -80,10 +85,15 @@ class BaseCameraViewController: UIViewController {
     // MARK: --- Life Cricle ---
     override func viewDidLoad() {
         setupAVCaptureSession()
+        _ = configureCaptureDevice(device: captureDevice)
         setupScaleGesture()
         setupGridLayer()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: .UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(avcaptureRuntimeError(_:)), name: .AVCaptureSessionRuntimeError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceWasConnect), name: .AVCaptureDeviceWasConnected, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(deviceWasDisconnect), name: .AVCaptureDeviceWasDisconnected, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -163,11 +173,10 @@ class BaseCameraViewController: UIViewController {
             gridLayer = nil
         }
         gridLayer = CALayer()
-        let scale = videoHeight / videoWidth
         let layerWidth = view.width
-        let layerHeight = layerWidth * scale
+        let layerHeight = layerWidth * videoScale
         gridLayer?.frame = CGRect(x: 0, y: (view.height - layerHeight)/2, width: layerWidth, height: layerHeight)
-        let lineWidth: CGFloat = 1
+        let lineWidth: CGFloat = 1 / ScreenScale
         gridLine(withFrame: CGRect(x: (view.width - 2*lineWidth)/3 , y: 0, width: lineWidth, height: layerHeight))
         gridLine(withFrame: CGRect(x: (view.width - 2*lineWidth)/3*2.0 + lineWidth, y: 0, width: lineWidth, height: layerHeight))
         gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2*lineWidth)/3, width: view.width, height: lineWidth))
@@ -180,12 +189,13 @@ class BaseCameraViewController: UIViewController {
         guard let gridLayer = gridLayer else { return }
         let line = CALayer()
         line.frame = frame
-        line.backgroundColor = UIColor.white.cgColor
+        line.backgroundColor = UIColorFromRGB(rgbValue: 0x8F898B, alphaValue: 0.7).cgColor
         gridLayer.addSublayer(line)
     }
     
     // 摄像头配置
-    fileprivate func configureCaptureDevice(device: AVCaptureDevice) -> AVCaptureDevice? {
+    fileprivate func configureCaptureDevice(device: AVCaptureDevice?) -> AVCaptureDevice? {
+        guard let device = device else { return nil }
         do {
             try device.lockForConfiguration()
             defer {
@@ -249,6 +259,9 @@ class BaseCameraViewController: UIViewController {
     // 自动对焦 白平衡 曝光
     @objc func touch(withPoint point: CGPoint) {
         guard let device = captureDevice else { return }
+        let videoWidth = view.width
+        let videoHeight = videoWidth * videoScale
+        let point = CGPoint(x: CGFloat(point.x / view.width), y: CGFloat(point.y / view.height))
         assert((point.x>=0 && point.x<1)&&(point.y>=0 && point.y<1), "触摸点错误")
         
         do {
@@ -299,7 +312,7 @@ class BaseCameraViewController: UIViewController {
     }
     
     // 切换摄像头
-    @objc func switchCamera() {
+    @objc func switchCamera(withAnimate isAnimate: Bool) {
         if cameraDevices.count > 1 {
             let animation = CATransition()
             animation.duration = 0.5
@@ -327,8 +340,12 @@ class BaseCameraViewController: UIViewController {
                 return
             }
             
+            isFrontCamera = !isFrontCamera
+            
             OnMainThreadAsync {
-                self.previewLayer?.add(animation, forKey: nil)
+                if isAnimate {
+                    self.previewLayer?.add(animation, forKey: nil)
+                }
                 self.captureSession.beginConfiguration()
                 defer {
                     self.captureSession.commitConfiguration()
@@ -354,14 +371,21 @@ class BaseCameraViewController: UIViewController {
         guard let photoSetting = photoSetting, let previewLayer = previewLayer else { return }
         OnMainThreadAsync {
             if let videoConnection = self.photoOutput?.connection(with: .video) {
+                videoConnection.videoScaleAndCropFactor = self.effectScale
                 let capturePhotoSetting = AVCapturePhotoSettings.init(from: photoSetting)
-                videoConnection.videoOrientation = (previewLayer.connection?.videoOrientation)!
+                var videoOrientation = (previewLayer.connection?.videoOrientation)!
+                if videoOrientation == .landscapeLeft {
+                    videoOrientation = .landscapeRight
+                } else if videoOrientation == .landscapeRight {
+                    videoOrientation = .landscapeLeft
+                }
+                videoConnection.videoOrientation = videoOrientation
                 self.photoOutput?.capturePhoto(with: capturePhotoSetting, delegate: self)
             }
         }
     }
     
-    // MARK: --- Public ---
+    // MARK: --- Notification ---
     @objc func applicationWillResignActive() {
         
     }
@@ -370,6 +394,20 @@ class BaseCameraViewController: UIViewController {
         
     }
     
+    @objc func avcaptureRuntimeError(_: Notification) {
+        
+    }
+    
+    @objc func deviceWasConnect() {
+        
+    }
+    
+    @objc func deviceWasDisconnect() {
+        
+    }
+    
+    
+    // MARK: --- Public ---
     func capturedImageHandler() {
         
     }
@@ -383,5 +421,14 @@ extension BaseCameraViewController: AVCapturePhotoCaptureDelegate {
         capturedImage = captureImage
         capturedImageHandler()
         UIImageWriteToSavedPhotosAlbum(capturedImage!, nil, nil, nil)
+    }
+}
+
+extension BaseCameraViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.isKind(of: UIPinchGestureRecognizer.self) {
+            beginScale = effectScale
+        }
+        return true
     }
 }
