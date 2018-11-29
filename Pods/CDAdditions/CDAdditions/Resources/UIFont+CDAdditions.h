@@ -13,5 +13,13 @@
 
 + (nullable UIFont *)cd_fontWithName:(NSString *)fontName size:(CGFloat)fontSize;
 
++ (UIFont *)boldPingFangFontWithSize:(CGFloat)size;
+
++ (UIFont *)regularPingFangFontWithSize:(CGFloat)size;
+
++ (UIFont *)thinPingFangFontWithSize:(CGFloat)size;
+
++ (UIFont *)mediumPingFangFontWithSize:(CGFloat)size;
+
 @end
 

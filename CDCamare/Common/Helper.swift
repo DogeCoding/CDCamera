@@ -24,3 +24,15 @@ extension NotificationCenter {
         NotificationCenter.default.post(name: name.notificationName, object: object)
     }
 }
+
+func touchShake() {
+    if #available(iOS 9.0, *) {
+        if UIScreen.main.traitCollection.forceTouchCapability == .available {
+            AudioServicesPlaySystemSound(1519)
+        } else {
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+        }
+    } else {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+    }
+}

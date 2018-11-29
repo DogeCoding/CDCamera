@@ -6,6 +6,8 @@
 //  Copyright © 2018 杨扶恺. All rights reserved.
 //
 
+import CoreImage
+
 enum CDCameraDeviceStatus {
     case off, on, auto
 }
@@ -51,18 +53,21 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
-    fileprivate var _isOpenTorch: Bool = false
-    var isOpenTorch: Bool {
+    fileprivate var _isTorchOn: Bool = false
+    var isTorchOn: Bool {
         set {
+            if isFrontCamera {
+                return
+            }
             if newValue {
                 changeTorchMode(torchMode: .on)
             } else {
                 changeTorchMode(torchMode: .off)
             }
-            _isOpenTorch = newValue
+            _isTorchOn = newValue
         }
         get {
-            return _isOpenTorch
+            return _isTorchOn
         }
     }
     
@@ -86,8 +91,10 @@ class BaseCameraViewController: UIViewController {
     override func viewDidLoad() {
         setupAVCaptureSession()
         _ = configureCaptureDevice(device: captureDevice)
+        isTorchOn = false
         setupScaleGesture()
         setupGridLayer()
+        findFormat()
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: .UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
@@ -109,24 +116,8 @@ class BaseCameraViewController: UIViewController {
     // MARK: --- Private ---
     fileprivate func setupAVCaptureSession() {
         guard let device = captureDevice else { return }
-        
-        captureSession.beginConfiguration()
-        defer {
-            captureSession.commitConfiguration()
-        }
-        
-        var sessionPreset: AVCaptureSession.Preset = .photo
-        switch((videoHeight, videoWidth)) {
-        case (640, 480):
-            sessionPreset = .vga640x480
-        case (1280, 720):
-            sessionPreset = .hd1280x720
-        default:
-            sessionPreset = .photo
-        }
-        if captureSession.canSetSessionPreset(sessionPreset) {
-            captureSession.sessionPreset = sessionPreset
-        }
+    
+        changePreset(width: videoWidth, height: videoHeight)
         
         do {
             try deviceInput = AVCaptureDeviceInput(device: device)
@@ -255,14 +246,55 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
+    fileprivate func findFormat() {
+        guard let avcaptureFormat = captureDevice?.formats else { return }
+        for format in avcaptureFormat {
+            print("yfk avcaptureFormat: \(format)")
+        }
+
+    }
+    
+    fileprivate func findFilter() {
+        let filterNames = CIFilter.filterNames(inCategory: kCICategoryBuiltIn) as [String]
+        for name in filterNames {
+            print("yfk filterName: \(name)")
+        }
+    }
+    
     // MARK: --- 相机操作 ---
+    // 更改比例
+    @objc func changePreset(width: CGFloat, height: CGFloat) {
+        captureSession.beginConfiguration()
+        defer {
+            captureSession.commitConfiguration()
+        }
+        
+        var sessionPreset: AVCaptureSession.Preset = .photo
+        switch((height, width)) {
+        case (640, 480):
+            sessionPreset = .vga640x480
+        case (1280, 720):
+            sessionPreset = .hd4K3840x2160
+        default:
+            sessionPreset = .photo
+        }
+        if captureSession.canSetSessionPreset(sessionPreset) {
+            captureSession.sessionPreset = sessionPreset
+        }
+    }
+    
     // 自动对焦 白平衡 曝光
-    @objc func touch(withPoint point: CGPoint) {
-        guard let device = captureDevice else { return }
-        let videoWidth = view.width
-        let videoHeight = videoWidth * videoScale
-        let point = CGPoint(x: CGFloat(point.x / view.width), y: CGFloat(point.y / view.height))
-        assert((point.x>=0 && point.x<1)&&(point.y>=0 && point.y<1), "触摸点错误")
+    @objc func touch(withPoint point: CGPoint, num: Int) {
+        guard let device = captureDevice, let previewLayer = previewLayer else { return }
+        var convertedPoint = previewLayer.captureDevicePointConverted(fromLayerPoint: point)
+        print("yfk \(point) convert: \(convertedPoint)")
+//        let videoWidth = view.width
+//        let videoHeight = videoWidth * videoScale
+//        var point = CGPoint(x: CGFloat(point.x / view.width), y: CGFloat(point.y / view.height))
+        if isFrontCamera {
+            convertedPoint = CGPoint(x: 1 - convertedPoint.x, y: 1 - convertedPoint.y)
+        }
+        assert((convertedPoint.x>=0 && convertedPoint.x<1)&&(convertedPoint.y>=0 && convertedPoint.y<1), "触摸点错误")
         
         do {
             try device.lockForConfiguration()
@@ -271,17 +303,20 @@ class BaseCameraViewController: UIViewController {
             }
             if device.isFocusModeSupported(.continuousAutoFocus), device.isFocusPointOfInterestSupported {
                 device.focusMode = .continuousAutoFocus
-                device.focusPointOfInterest = point
+                device.focusPointOfInterest = convertedPoint
             }
             if device.isWhiteBalanceModeSupported(.continuousAutoWhiteBalance) {
                 device.whiteBalanceMode = .continuousAutoWhiteBalance
             }
             if device.isExposureModeSupported(.continuousAutoExposure), device.isExposurePointOfInterestSupported {
                 device.exposureMode = .continuousAutoExposure
-                device.exposurePointOfInterest = point
+                device.exposurePointOfInterest = convertedPoint
             }
         } catch _ as NSError {
             
+        }
+        if num-1 > 0 {
+            touch(withPoint: point, num: num-1)
         }
     }
     
@@ -300,15 +335,18 @@ class BaseCameraViewController: UIViewController {
         } catch _ as NSError {
             
         }
+        
     }
     
     // 切换横竖屏
     @objc func changeOrientation() {
-        guard let v = videoOrientationFromCurrentDeviceOrientation else {
+        guard let v = videoOrientationFromCurrentDeviceOrientation, let connection = previewLayer?.connection else {
             return
         }
-        previewLayer?.connection?.videoOrientation = v
-        photoOutput?.connection(with: .video)?.videoOrientation = v
+        if connection.isVideoOrientationSupported {
+            connection.videoOrientation = v
+            photoOutput?.connection(with: .video)?.videoOrientation = v
+        }
     }
     
     // 切换摄像头

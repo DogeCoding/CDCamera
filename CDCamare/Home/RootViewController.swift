@@ -70,6 +70,7 @@ class RootViewController: UIViewController {
     }
     
     @objc fileprivate func cameraAction() {
+        touchShake()
         AuthenticationHelper.camera {
             AuthenticationHelper.photo {
                 dispatch_safe_main_async {
@@ -81,7 +82,16 @@ class RootViewController: UIViewController {
     }
     
     @objc fileprivate func testAction() {
-        let vc = UIImagePickerController()
-        navigationController?.pushViewController(vc, animated: false)
+        touchShake()
+        
+        //        if (@available(iOS 9.0, *)) {
+        //            if ([UIScreen mainScreen].traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+        //                AudioServicesPlaySystemSound(1519);
+        //            } else {
+        //                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        //            }
+        //        } else {
+        //            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        //        }
     }
 }

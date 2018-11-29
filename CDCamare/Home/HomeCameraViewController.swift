@@ -6,11 +6,16 @@
 //  Copyright © 2018 杨扶恺. All rights reserved.
 //
 
+import TZImagePickerController
+
 class HomeCameraViewController: BaseCameraViewController {
     
     fileprivate var switchCameraBtn: BaseButton?
     fileprivate var captureBtn: BaseButton?
     fileprivate lazy var imageView = UIImageView()
+    
+    fileprivate var topControlView: HomeTopControlView?
+    fileprivate var topSupportView: HomeTopSupportView?
     
     fileprivate var focusView: UIView = {
         let view = UIView()
@@ -47,13 +52,14 @@ class HomeCameraViewController: BaseCameraViewController {
     }
     
     fileprivate func setupTopControl() {
-        switchCameraBtn = BaseButton(type: .custom)
-        switchCameraBtn?.setImage(UIImage(named: "camera_switch"), for: .normal)
-        switchCameraBtn?.size = CGSize(width: 50, height: 50)
-        switchCameraBtn?.top = 20
-        switchCameraBtn?.centerX = view.centerX
-        switchCameraBtn?.addTarget(self, action: #selector(switchCameraAction), for: .touchUpInside)
-        view.addSubview(switchCameraBtn!)
+        topControlView = HomeTopControlView(frame: CGRect(x: 0, y: 20, width: view.width, height: 50))
+        topControlView?.delegate = self
+        view.addSubview(topControlView!)
+        
+        topSupportView = HomeTopSupportView(frame: CGRect(x: 10, y: topControlView!.bottom+10, width: view.width-20, height: 45))
+        topSupportView?.delegate = self
+        topSupportView?.isHidden = true
+        view.addSubview(topSupportView!)
     }
     
     fileprivate func setupRightControl() {
@@ -79,15 +85,17 @@ class HomeCameraViewController: BaseCameraViewController {
     }
     
     // MARK: --- Actions ---
-    @objc fileprivate func switchCameraAction() {
-        switchCamera(withAnimate: true)
-    }
-    
     @objc fileprivate func imageViewTapGesture() {
         imageView.isHidden = true
     }
     
     @objc fileprivate func previewTapGesture(gesture: UITapGestureRecognizer) {
+        if let topSupportView = topSupportView, !topSupportView.isHidden {
+            topSupportView.dismiss {
+                topSupportView.isHidden = true
+            }
+            return
+        }
         guard let previewLayer = previewLayer else { return }
         NSObject.cancelPreviousPerformRequests(withTarget: focusView)
         let location = gesture.location(in: view)
@@ -95,11 +103,67 @@ class HomeCameraViewController: BaseCameraViewController {
         focusView.center = convertdLocation
         focusView.alpha = 0
         focusView.isHidden = false
-        touch(withPoint: convertdLocation)
+        touch(withPoint: location, num: 2)
         UIView.animate(withDuration: 0.2, animations: {
             self.focusView.alpha = 1
         }) { (finish) in
             self.focusView.isHidden = true
         }
+    }
+}
+
+extension HomeCameraViewController: HomeTopControlViewDelegate {
+    func clickMore(isOpen: Bool) {
+        guard let topSupportView = topSupportView else { return }
+        if !topSupportView.isHidden {
+            topSupportView.dismiss {
+                topSupportView.isHidden = true
+            }
+            return
+        }
+        topSupportView.isHidden = false
+        topSupportView.show()
+    }
+    
+    func clickRatio(width: CGFloat, heigth: CGFloat) {
+        changePreset(width: width, height: heigth)
+    }
+    
+    func clickAlbum() {
+        guard let imagePickVC = TZImagePickerController(maxImagesCount: 1, delegate: self) else { return }
+        present(imagePickVC, animated: false, completion: nil)
+    }
+    
+    func clickSwitchCamera() {
+        switchCamera(withAnimate: false)
+    }
+}
+
+extension HomeCameraViewController: HomeTopSupportViewDelegate {
+    func clickDelayCapture() {
+        
+    }
+    
+    func clickTorch() {
+        isTorchOn = !isTorchOn
+    }
+    
+    func clickGrid() {
+        guard let gridLayer = gridLayer else { return }
+        gridLayer.isHidden = !gridLayer.isHidden
+    }
+    
+    func clickCameraSetting() {
+        
+    }
+}
+
+extension HomeCameraViewController: TZImagePickerControllerDelegate {
+    func imagePickerController(_ picker: TZImagePickerController!, didFinishPickingPhotos photos: [UIImage]!, sourceAssets assets: [Any]!, isSelectOriginalPhoto: Bool, infos: [[AnyHashable : Any]]!) {
+        
+    }
+    
+    func imagePickerController(_ picker: TZImagePickerController!, didFinishPickingVideo coverImage: UIImage!, sourceAssets asset: PHAsset!) {
+        
     }
 }

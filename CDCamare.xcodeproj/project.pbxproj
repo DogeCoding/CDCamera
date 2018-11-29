@@ -15,6 +15,7 @@
 		DD15CE122122B42F0054649E /* CDCamareUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CE112122B42F0054649E /* CDCamareUITests.swift */; };
 		DD2F83D221A698E300345D1E /* HomeCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2F83D121A698E300345D1E /* HomeCameraViewController.swift */; };
 		DD2F83D521A7A4AF00345D1E /* BaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2F83D421A7A4AF00345D1E /* BaseButton.swift */; };
+		DD4637C721AE9D640065CACB /* HomeTopSupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4637C621AE9D640065CACB /* HomeTopSupportView.swift */; };
 		DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */; };
 		DD628EAB2199AEFA000B247F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAA2199AEFA000B247F /* RootViewController.swift */; };
 		DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAC2199AF6A000B247F /* MacroFile.swift */; };
@@ -59,6 +60,7 @@
 		DD15CE132122B42F0054649E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD2F83D121A698E300345D1E /* HomeCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCameraViewController.swift; sourceTree = "<group>"; };
 		DD2F83D421A7A4AF00345D1E /* BaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
+		DD4637C621AE9D640065CACB /* HomeTopSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTopSupportView.swift; sourceTree = "<group>"; };
 		DD628E9F2199AD75000B247F /* CDCamare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CDCamare-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD628EA42199AE09000B247F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				DD628EB6219AF92D000B247F /* BaseCameraViewController.swift */,
 				DD2F83D121A698E300345D1E /* HomeCameraViewController.swift */,
 				DDA98C4E21AA514E008D4AAC /* HomeTopControlView.swift */,
+				DD4637C621AE9D640065CACB /* HomeTopSupportView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -349,6 +352,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/TZImagePickerController/TZImagePickerController.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -363,6 +367,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TZImagePickerController.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -400,6 +405,7 @@
 				DD628EB7219AF92D000B247F /* BaseCameraViewController.swift in Sources */,
 				DD2F83D521A7A4AF00345D1E /* BaseButton.swift in Sources */,
 				DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */,
+				DD4637C721AE9D640065CACB /* HomeTopSupportView.swift in Sources */,
 				DD628EAB2199AEFA000B247F /* RootViewController.swift in Sources */,
 				DDA98C4F21AA514E008D4AAC /* HomeTopControlView.swift in Sources */,
 				DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */,

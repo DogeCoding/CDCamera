@@ -19,4 +19,20 @@
     return font;
 }
 
++ (UIFont *)boldPingFangFontWithSize:(CGFloat)size {
+    return [UIFont cd_fontWithName:@"PingFangSC-Semibold" size:size];
+}
+
++ (UIFont *)regularPingFangFontWithSize:(CGFloat)size {
+    return [UIFont cd_fontWithName:@"PingFangSC-Regular" size:size];
+}
+
++ (UIFont *)thinPingFangFontWithSize:(CGFloat)size {
+    return [UIFont cd_fontWithName:@"PingFangSC-Thin" size:size];
+}
+
++ (UIFont *)mediumPingFangFontWithSize:(CGFloat)size {
+    return [UIFont cd_fontWithName:@"PingFangSC-Medium" size:size];
+}
+
 @end

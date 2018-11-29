@@ -9,11 +9,14 @@
 class BaseButton: UIButton {
     
     func verticalButton(vPadding: CGFloat) {
-        guard let imageView = imageView, let titleLabel = titleLabel else { return }
+        guard let imageView = imageView, let titleLabel = titleLabel, let titleText = titleLabel.text else { return }
         contentVerticalAlignment = .top
         contentHorizontalAlignment = .left
-        imageEdgeInsets = UIEdgeInsetsMake((height - vPadding - imageView.height - titleLabel.height)/2, (width - imageView.width)/2, 0, 0)
-        titleEdgeInsets = UIEdgeInsetsMake(imageView.bottom+vPadding, (width - titleLabel.width)/2, 0, 0)
+        let iconWidth = width-10
+        imageView.size = CGSize(width: iconWidth, height: iconWidth)
+        let labelWidth = NSString(string: titleText).cd_size(with: titleLabel.font).width
+        imageEdgeInsets = UIEdgeInsetsMake((width - iconWidth)/2 - vPadding, (width - iconWidth)/2, 0, 0)
+        titleEdgeInsets = UIEdgeInsetsMake((width + iconWidth)/2 - vPadding, (width - labelWidth)/2 - iconWidth, 0, 0)
     }
     
 }
