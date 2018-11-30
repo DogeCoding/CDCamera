@@ -17,6 +17,10 @@ class HomeCameraViewController: BaseCameraViewController {
     fileprivate var topControlView: HomeTopControlView?
     fileprivate var topSupportView: HomeTopSupportView?
     
+    fileprivate var filterNames: [String] = {
+        return ["CIColorInvert", "CIPhotoEffectMono", "CIPhotoEffectInstant", "CIPhotoEffectTransfer"]
+    }()
+    
     fileprivate var focusView: UIView = {
         let view = UIView()
         view.size = CGSize(width: 50, height: 50)
@@ -139,9 +143,13 @@ extension HomeCameraViewController: HomeTopControlViewDelegate {
     }
 }
 
+fileprivate var filterIndex: Int = 0
 extension HomeCameraViewController: HomeTopSupportViewDelegate {
     func clickDelayCapture() {
         
+        let filterName = filterNames[filterIndex % filterNames.count]
+        filterIndex += 1
+        filter = CIFilter(name: filterName)
     }
     
     func clickTorch() {

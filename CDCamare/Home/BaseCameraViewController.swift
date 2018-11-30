@@ -15,12 +15,21 @@ enum CDCameraDeviceStatus {
 class BaseCameraViewController: UIViewController {
     
     lazy var captureSession = AVCaptureSession()
-    lazy var captureDevice = AVCaptureDevice.default(for: .video)
+    lazy var captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
     var photoSetting: AVCapturePhotoSettings?
     var deviceInput: AVCaptureDeviceInput?
     var photoOutput: AVCapturePhotoOutput?
+    var videoOutput: AVCaptureVideoDataOutput?
     var previewLayer: AVCaptureVideoPreviewLayer?
+    var videoLayer: CALayer?
     var gridLayer: CALayer?
+    
+    var filter: CIFilter?
+    lazy var context: CIContext = {
+        let eaglContext = EAGLContext(api: .openGLES2)
+        let options = [kCIContextWorkingColorSpace : NSNull()]
+        return CIContext(eaglContext: eaglContext!, options: options)
+    }()
     
     var videoWidth: CGFloat = 480
     var videoHeight: CGFloat = 640
@@ -89,7 +98,7 @@ class BaseCameraViewController: UIViewController {
     
     // MARK: --- Life Cricle ---
     override func viewDidLoad() {
-        setupAVCaptureSession()
+        setupCaptureSession()
         _ = configureCaptureDevice(device: captureDevice)
         isTorchOn = false
         setupScaleGesture()
@@ -114,42 +123,59 @@ class BaseCameraViewController: UIViewController {
     }
     
     // MARK: --- Private ---
-    fileprivate func setupAVCaptureSession() {
+    fileprivate func setupCaptureSession() {
         guard let device = captureDevice else { return }
     
         changePreset(width: videoWidth, height: videoHeight)
         
-        do {
-            try deviceInput = AVCaptureDeviceInput(device: device)
-            photoOutput = AVCapturePhotoOutput()
-            
-            photoSetting = AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])
-            photoSetting?.isAutoStillImageStabilizationEnabled = true
-            photoSetting?.isHighResolutionPhotoEnabled = true
-            if photoOutput!.supportedFlashModes.contains(.auto) {
-                photoSetting?.flashMode = .auto
-            }
-            
-            photoOutput?.isHighResolutionCaptureEnabled = true
-            photoOutput?.setPreparedPhotoSettingsArray([photoSetting!], completionHandler: nil)
-            
-            guard let deviceInput = deviceInput, let photoOutput = photoOutput else { return }
-            
-            if captureSession.canAddInput(deviceInput) {
-                captureSession.addInput(deviceInput)
-            }
-            if captureSession.canAddOutput(photoOutput) {
-                captureSession.addOutput(photoOutput)
-            }
-            
-            previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-            previewLayer?.videoGravity = .resizeAspect
-            previewLayer?.frame = view.bounds
-            view.layer.insertSublayer(previewLayer!, at: 0)
-        } catch {
-            
+        captureSession.beginConfiguration()
+        defer {
+            captureSession.commitConfiguration()
+        }
+        deviceInput = try? AVCaptureDeviceInput(device: device)
+        guard let deviceInput = deviceInput else { return }
+        
+        photoOutput = AVCapturePhotoOutput()
+        
+        photoSetting = AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])
+        photoSetting?.isAutoStillImageStabilizationEnabled = true
+        photoSetting?.isHighResolutionPhotoEnabled = true
+        if photoOutput!.supportedFlashModes.contains(.auto) {
+            photoSetting?.flashMode = .auto
         }
         
+        photoOutput?.isHighResolutionCaptureEnabled = true
+        photoOutput?.setPreparedPhotoSettingsArray([photoSetting!], completionHandler: nil)
+        
+        videoOutput = AVCaptureVideoDataOutput()
+        videoOutput?.videoSettings = [kCVPixelBufferPixelFormatTypeKey : kCVPixelFormatType_32BGRA] as [String : Any]
+        videoOutput?.alwaysDiscardsLateVideoFrames = true
+        
+        let videoBufferQueue = DispatchQueue(label: "CDVideoBufferQueue")
+        videoOutput?.setSampleBufferDelegate(self, queue: videoBufferQueue)
+        
+        guard let photoOutput = photoOutput, let videoOutput = videoOutput else { return }
+        
+        if captureSession.canAddInput(deviceInput) {
+            captureSession.addInput(deviceInput)
+        }
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
+        }
+        if captureSession.canAddOutput(photoOutput) {
+            captureSession.addOutput(photoOutput)
+        }
+        
+        
+        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer?.videoGravity = .resizeAspect
+        previewLayer?.frame = view.bounds
+//            view.layer.insertSublayer(previewLayer!, at: 0)
+        
+        videoLayer = CALayer()
+        videoLayer?.anchorPoint = .zero
+        videoLayer?.bounds = view.bounds
+        view.layer.insertSublayer(videoLayer!, at: 0)
     }
     
     fileprivate func setupScaleGesture() {
@@ -346,6 +372,7 @@ class BaseCameraViewController: UIViewController {
         if connection.isVideoOrientationSupported {
             connection.videoOrientation = v
             photoOutput?.connection(with: .video)?.videoOrientation = v
+            videoOutput?.connection(with: .video)?.videoOrientation = v
         }
     }
     
@@ -395,6 +422,10 @@ class BaseCameraViewController: UIViewController {
                 if self.captureSession.canAddInput(newInput) {
                     self.captureSession.addInput(newInput)
                     self.deviceInput = newInput
+                    
+                    self.videoLayer?.bounds = CGRect(x: 0, y: 0, width: self.view.height, height: self.view.width)
+                    self.videoLayer?.position = CGPoint(x: self.view.width/2, y: self.view.height/2)
+//                    self.videoLayer?.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(.pi/2.0)))
                 } else {
                     if let deviceInput = self.deviceInput {
                         self.captureSession.addInput(deviceInput)
@@ -449,6 +480,8 @@ class BaseCameraViewController: UIViewController {
     func capturedImageHandler() {
         
     }
+    
+    
 }
 
 extension BaseCameraViewController: AVCapturePhotoCaptureDelegate {
@@ -459,6 +492,43 @@ extension BaseCameraViewController: AVCapturePhotoCaptureDelegate {
         capturedImage = captureImage
         capturedImageHandler()
         UIImageWriteToSavedPhotosAlbum(capturedImage!, nil, nil, nil)
+    }
+    
+}
+
+extension BaseCameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        
+        var outputImage = CIImage(cvPixelBuffer: imageBuffer)
+        
+        let orientation = UIDevice.current.orientation
+        var transform: CGAffineTransform!
+        
+        switch orientation {
+        case .portrait:
+            transform = CGAffineTransform(rotationAngle: CGFloat(-.pi / 2.0))
+        case .portraitUpsideDown:
+            transform = CGAffineTransform(rotationAngle: CGFloat(.pi / 2.0))
+        case .landscapeRight:
+            transform = CGAffineTransform(rotationAngle: CGFloat(Float.pi))
+        default:
+            transform = CGAffineTransform(rotationAngle: 0)
+        }
+        
+        outputImage = outputImage.transformed(by: transform)
+        
+        if filter != nil {
+            filter?.setValue(outputImage, forKey: kCIInputImageKey)
+            if filter?.outputImage != nil {
+                outputImage = filter!.outputImage!
+            }
+        }
+        
+        let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
+        OnMainThreadAsync {
+            self.videoLayer?.contents = cgImage
+        }
     }
 }
 

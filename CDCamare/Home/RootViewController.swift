@@ -83,15 +83,5 @@ class RootViewController: UIViewController {
     
     @objc fileprivate func testAction() {
         touchShake()
-        
-        //        if (@available(iOS 9.0, *)) {
-        //            if ([UIScreen mainScreen].traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-        //                AudioServicesPlaySystemSound(1519);
-        //            } else {
-        //                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        //            }
-        //        } else {
-        //            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-        //        }
     }
 }
