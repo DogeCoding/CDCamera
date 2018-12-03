@@ -25,7 +25,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "373"
             endingLineNumber = "373"
-            landmarkName = "changeOrientation()"
+            landmarkName = "touch(withPoint:num:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

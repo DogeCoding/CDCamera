@@ -16,14 +16,29 @@ class BaseCameraViewController: UIViewController {
     
     lazy var captureSession = AVCaptureSession()
     lazy var captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
+    
+    // 是视频模式 否则live photo
+    fileprivate var isVideoStatus = true
+    
     var photoSetting: AVCapturePhotoSettings?
     var deviceInput: AVCaptureDeviceInput?
     var photoOutput: AVCapturePhotoOutput?
     var videoOutput: AVCaptureVideoDataOutput?
-    var previewLayer: AVCaptureVideoPreviewLayer?
-    var videoLayer: CALayer?
+    var previewPhotoLayer: AVCaptureVideoPreviewLayer?
+    var previewVideoLayer: CALayer?
     var gridLayer: CALayer?
     
+    var assetWriter: AVAssetWriter?
+    var assetWriterPixelBufferInput: AVAssetWriterInputPixelBufferAdaptor?
+    var isWriting = false
+    
+    var currentSampleTime: CMTime?
+    var currentVideoDimensions: CMVideoDimensions?
+    
+    var capturedImage: UIImage?
+    var ciImage: CIImage?
+    
+    // 滤镜
     var filter: CIFilter?
     lazy var context: CIContext = {
         let eaglContext = EAGLContext(api: .openGLES2)
@@ -31,6 +46,7 @@ class BaseCameraViewController: UIViewController {
         return CIContext(eaglContext: eaglContext!, options: options)
     }()
     
+    // 视频尺寸
     var videoWidth: CGFloat = 480
     var videoHeight: CGFloat = 640
     var videoScale: CGFloat {
@@ -39,6 +55,7 @@ class BaseCameraViewController: UIViewController {
     
     var isFrontCamera: Bool = false
     
+    // 画面缩放
     var isEableScale: Bool {
         set {
             scaleGusture?.isEnabled = newValue
@@ -54,14 +71,13 @@ class BaseCameraViewController: UIViewController {
     var beginScale: CGFloat = 1.0
     var effectScale: CGFloat = 1.0
     
-    var capturedImage: UIImage?
-    
     var cameraDevices: [AVCaptureDevice] {
         get {
             return AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: .video, position: .unspecified).devices
         }
     }
     
+    // 闪光灯
     fileprivate var _isTorchOn: Bool = false
     var isTorchOn: Bool {
         set {
@@ -132,8 +148,12 @@ class BaseCameraViewController: UIViewController {
         defer {
             captureSession.commitConfiguration()
         }
+        
         deviceInput = try? AVCaptureDeviceInput(device: device)
         guard let deviceInput = deviceInput else { return }
+        if captureSession.canAddInput(deviceInput) {
+            captureSession.addInput(deviceInput)
+        }
         
         photoOutput = AVCapturePhotoOutput()
         
@@ -154,34 +174,36 @@ class BaseCameraViewController: UIViewController {
         let videoBufferQueue = DispatchQueue(label: "CDVideoBufferQueue")
         videoOutput?.setSampleBufferDelegate(self, queue: videoBufferQueue)
         
-        guard let photoOutput = photoOutput, let videoOutput = videoOutput else { return }
+        guard let videoOutput = videoOutput else { return }
         
-        if captureSession.canAddInput(deviceInput) {
-            captureSession.addInput(deviceInput)
-        }
         if captureSession.canAddOutput(videoOutput) {
             captureSession.addOutput(videoOutput)
         }
-        if captureSession.canAddOutput(photoOutput) {
-            captureSession.addOutput(photoOutput)
+        
+        previewPhotoLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewPhotoLayer?.videoGravity = .resizeAspect
+        previewPhotoLayer?.frame = view.bounds
+        view.layer.insertSublayer(previewPhotoLayer!, at: 0)
+        previewPhotoLayer?.isHidden = true
+        
+        previewVideoLayer = CALayer()
+        previewVideoLayer?.anchorPoint = .zero
+        previewVideoLayer?.bounds = view.bounds
+        view.layer.insertSublayer(previewVideoLayer!, at: 0)
+        
+        // 人脸检测
+        let metadataOutput = AVCaptureMetadataOutput()
+        metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+        
+        if captureSession.canAddOutput(metadataOutput) {
+            captureSession.addOutput(metadataOutput)
+            metadataOutput.metadataObjectTypes = [AVMetadataObject.ObjectType.face]
         }
-        
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer?.videoGravity = .resizeAspect
-        previewLayer?.frame = view.bounds
-//            view.layer.insertSublayer(previewLayer!, at: 0)
-        
-        videoLayer = CALayer()
-        videoLayer?.anchorPoint = .zero
-        videoLayer?.bounds = view.bounds
-        view.layer.insertSublayer(videoLayer!, at: 0)
     }
     
     fileprivate func setupScaleGesture() {
         scaleGusture = UIPinchGestureRecognizer(target: self, action: #selector(handleScaleGesture(recoginer:)))
         view.addGestureRecognizer(scaleGusture!)
-        isEableScale = true
     }
     
     fileprivate func setupGridLayer() {
@@ -247,12 +269,12 @@ class BaseCameraViewController: UIViewController {
     }
     
     @objc fileprivate func handleScaleGesture(recoginer: UIPinchGestureRecognizer) {
-        guard let previewLayer = previewLayer else { return }
+        guard let previewPhotoLayer = previewPhotoLayer else { return }
         var allTouchsAreOnThePreviewLayer = true
         for i in 0..<recoginer.numberOfTouches {
             let location = recoginer.location(ofTouch: i, in: view)
-            let convertdLocation = previewLayer.convert(location, from: previewLayer.superlayer)
-            if !previewLayer.contains(convertdLocation) {
+            let convertdLocation = previewPhotoLayer.convert(location, from: previewPhotoLayer.superlayer)
+            if !previewPhotoLayer.contains(convertdLocation) {
                 allTouchsAreOnThePreviewLayer = false
                 break
             }
@@ -267,7 +289,7 @@ class BaseCameraViewController: UIViewController {
             
             CATransaction.begin()
             CATransaction.setAnimationDuration(0.25)
-            previewLayer.setAffineTransform(CGAffineTransform(scaleX: effectScale, y: effectScale))
+            previewPhotoLayer.setAffineTransform(CGAffineTransform(scaleX: effectScale, y: effectScale))
             CATransaction.commit()
         }
     }
@@ -311,7 +333,11 @@ class BaseCameraViewController: UIViewController {
     
     // 自动对焦 白平衡 曝光
     @objc func touch(withPoint point: CGPoint, num: Int) {
-        guard let device = captureDevice, let previewLayer = previewLayer else { return }
+        var _previewLayer = previewVideoLayer
+        if !isVideoStatus {
+            _previewLayer = previewPhotoLayer
+        }
+        guard let device = captureDevice, let previewLayer = _previewLayer else { return }
         var convertedPoint = previewLayer.captureDevicePointConverted(fromLayerPoint: point)
         print("yfk \(point) convert: \(convertedPoint)")
 //        let videoWidth = view.width
@@ -366,14 +392,14 @@ class BaseCameraViewController: UIViewController {
     
     // 切换横竖屏
     @objc func changeOrientation() {
-        guard let v = videoOrientationFromCurrentDeviceOrientation, let connection = previewLayer?.connection else {
-            return
-        }
-        if connection.isVideoOrientationSupported {
-            connection.videoOrientation = v
-            photoOutput?.connection(with: .video)?.videoOrientation = v
-            videoOutput?.connection(with: .video)?.videoOrientation = v
-        }
+//        guard let v = videoOrientationFromCurrentDeviceOrientation, let connection = previewLayer?.connection else {
+//            return
+//        }
+//        if connection.isVideoOrientationSupported {
+//            connection.videoOrientation = v
+//            photoOutput?.connection(with: .video)?.videoOrientation = v
+//            videoOutput?.connection(with: .video)?.videoOrientation = v
+//        }
     }
     
     // 切换摄像头
@@ -409,7 +435,8 @@ class BaseCameraViewController: UIViewController {
             
             OnMainThreadAsync {
                 if isAnimate {
-                    self.previewLayer?.add(animation, forKey: nil)
+                    self.previewPhotoLayer?.add(animation, forKey: nil)
+                    self.previewVideoLayer?.add(animation, forKey: nil)
                 }
                 self.captureSession.beginConfiguration()
                 defer {
@@ -422,10 +449,7 @@ class BaseCameraViewController: UIViewController {
                 if self.captureSession.canAddInput(newInput) {
                     self.captureSession.addInput(newInput)
                     self.deviceInput = newInput
-                    
-                    self.videoLayer?.bounds = CGRect(x: 0, y: 0, width: self.view.height, height: self.view.width)
-                    self.videoLayer?.position = CGPoint(x: self.view.width/2, y: self.view.height/2)
-//                    self.videoLayer?.setAffineTransform(CGAffineTransform(rotationAngle: CGFloat(.pi/2.0)))
+
                 } else {
                     if let deviceInput = self.deviceInput {
                         self.captureSession.addInput(deviceInput)
@@ -436,8 +460,16 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
-    @objc func captureImage() {
-        guard let photoSetting = photoSetting, let previewLayer = previewLayer else { return }
+    @objc func captureImage(sender: UIButton) {
+        guard let ciImage = ciImage, isWriting == true else { return }
+        
+        sender.isEnabled = false
+        captureSession.stopRunning()
+        
+        let cgImage = context.createCGImage(ciImage, from: ciImage.extent)
+        
+        PHPhotoLibrary
+        
         OnMainThreadAsync {
             if let videoConnection = self.photoOutput?.connection(with: .video) {
                 videoConnection.videoScaleAndCropFactor = self.effectScale
@@ -530,6 +562,10 @@ extension BaseCameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate
             self.videoLayer?.contents = cgImage
         }
     }
+}
+
+extension BaseCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
+    
 }
 
 extension BaseCameraViewController: UIGestureRecognizerDelegate {
