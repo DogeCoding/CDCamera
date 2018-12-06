@@ -22,7 +22,7 @@
     for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
         [output appendFormat:@"%02x", digest[i]];
     
-    return  output;
+    return output;
 }
 
 /**
@@ -88,6 +88,13 @@
 
 - (CGSize)cd_sizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakMode {
     return [self cd_sizeWithFont:font constrainedToSize:size lineBreakMode:lineBreakMode lineSpacing:0];
+}
+
++ (NSString *)currentDate {
+    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    return [formatter stringFromDate:date];
 }
 
 @end

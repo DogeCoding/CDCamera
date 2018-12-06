@@ -1,5 +1,5 @@
 PODS:
-  - CDAdditions (0.2.9)
+  - CDAdditions (0.2.10)
   - CRToast (0.0.9)
   - FLEX (2.4.0)
   - IQKeyboardManagerSwift (6.2.0)
@@ -12,7 +12,7 @@ PODS:
   - RxSwift (4.4.0):
     - RxAtomic (~> 4.4)
   - SnapKit (4.2.0)
-  - TZImagePickerController (3.1.4)
+  - TZImagePickerController (3.1.5)
 
 DEPENDENCIES:
   - CDAdditions
@@ -43,7 +43,7 @@ SPEC REPOS:
     - TZImagePickerController
 
 SPEC CHECKSUMS:
-  CDAdditions: f358d964d96af3a98ea6ff65e2923ac88fbeeca4
+  CDAdditions: c0bde59bb976a4f12e35de50f848f15e45158048
   CRToast: 5a78c22b921c5ed3487488af605bc403a9c92fed
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   IQKeyboardManagerSwift: b07ccf9d8cafe993dcd6cb794eb4ba34611a0c4e
@@ -54,8 +54,8 @@ SPEC CHECKSUMS:
   RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  TZImagePickerController: c5d08f4f79ef3a4aa5af70c199009f59dac978a3
+  TZImagePickerController: 6cc6e9c1a73bb8e62cfef98fd40af2d90634dcf5
 
-PODFILE CHECKSUM: 0af7d355214b2b6947d6f39de28a5d9151902217
+PODFILE CHECKSUM: 4b02657f2eac14e92dde8108fb08f5a05b38b976
 
 COCOAPODS: 1.5.3

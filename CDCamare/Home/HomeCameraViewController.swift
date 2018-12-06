@@ -76,7 +76,7 @@ class HomeCameraViewController: BaseCameraViewController {
         captureBtn?.size = CGSize(width: 50, height: 50)
         captureBtn?.bottom = view.height - 10
         captureBtn?.centerX = view.centerX
-        captureBtn?.addTarget(self, action: #selector(captureImage), for: .touchUpInside)
+        captureBtn?.addTarget(self, action: #selector(record), for: .touchUpInside)
         view.addSubview(captureBtn!)
     }
     
@@ -100,7 +100,7 @@ class HomeCameraViewController: BaseCameraViewController {
             }
             return
         }
-        guard let previewLayer = previewLayer else { return }
+        guard let previewLayer = previewVideoLayer else { return }
         NSObject.cancelPreviousPerformRequests(withTarget: focusView)
         let location = gesture.location(in: view)
         let convertdLocation = previewLayer.convert(location, from: previewLayer.superlayer)

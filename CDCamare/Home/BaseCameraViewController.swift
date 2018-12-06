@@ -28,6 +28,8 @@ class BaseCameraViewController: UIViewController {
     var previewVideoLayer: CALayer?
     var gridLayer: CALayer?
     
+    var faceObjcet: AVMetadataFaceObject?
+    
     var assetWriter: AVAssetWriter?
     var assetWriterPixelBufferInput: AVAssetWriterInputPixelBufferAdaptor?
     var isWriting = false
@@ -46,7 +48,7 @@ class BaseCameraViewController: UIViewController {
         return CIContext(eaglContext: eaglContext!, options: options)
     }()
     
-    // 视频尺寸
+    // 视频分辨率
     var videoWidth: CGFloat = 480
     var videoHeight: CGFloat = 640
     var videoScale: CGFloat {
@@ -206,6 +208,7 @@ class BaseCameraViewController: UIViewController {
         view.addGestureRecognizer(scaleGusture!)
     }
     
+    // 网格线
     fileprivate func setupGridLayer() {
         if let layer = gridLayer {
             layer.removeFromSuperlayer()
@@ -268,6 +271,114 @@ class BaseCameraViewController: UIViewController {
         return nil
     }
     
+    // 保存视频
+    fileprivate func saveMovieToCameraRoll(_ finishBlock: @escaping () -> Void) {
+        do {
+            try PHPhotoLibrary.shared().performChangesAndWait {
+                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: self.movieURL())
+            }
+        } catch _ as NSError {
+            checkForAndDeleteFile()
+        }
+        finishBlock()
+    }
+    
+    // 视频保存路径
+    fileprivate func movieURL() -> URL {
+        let tempDir = NSTemporaryDirectory()
+        return URL(fileURLWithPath: tempDir).appendingPathComponent("test.mp4")
+    }
+    
+    // 删除之前的临时文件
+    fileprivate func checkForAndDeleteFile() {
+        let fm = FileManager.default
+        let url = movieURL()
+        if fm.fileExists(atPath: url.path) {
+            do {
+                try fm.removeItem(at: url)
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    fileprivate func createWriter() {
+        checkForAndDeleteFile()
+        
+        do {
+            assetWriter = try AVAssetWriter(outputURL: movieURL(), fileType: .mp4)
+        } catch let error as NSError {
+            print("创建writer失败")
+            print(error.localizedDescription)
+            return
+        }
+        
+        let outputSettings = [
+            AVVideoCodecKey : AVVideoCodecType.h264,
+            AVVideoWidthKey : Int(currentVideoDimensions!.width),
+        AVVideoHeightKey : Int(currentVideoDimensions!.height)] as [String : Any]
+        
+        let assetWriterVideoInput = AVAssetWriterInput(mediaType: .video, outputSettings: outputSettings)
+        assetWriterVideoInput.expectsMediaDataInRealTime = true
+        assetWriterVideoInput.transform = CGAffineTransform(rotationAngle: .pi / 2.0)
+        
+        let sourcePixelBufferAttributesDictionary = [
+            String(kCVPixelBufferPixelFormatTypeKey) : Int(kCVPixelFormatType_32BGRA),
+            String(kCVPixelBufferWidthKey) : Int(currentVideoDimensions!.width),
+            String(kCVPixelBufferHeightKey) : Int(currentVideoDimensions!.height),
+        String(kCVPixelFormatOpenGLESCompatibility) : kCFBooleanTrue] as [String : Any]
+        
+        assetWriterPixelBufferInput = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: assetWriterVideoInput, sourcePixelBufferAttributes: sourcePixelBufferAttributesDictionary)
+        
+        if assetWriter!.canAdd(assetWriterVideoInput) {
+            assetWriter!.add(assetWriterVideoInput)
+        } else {
+            print("不能添加视频writer的input \(assetWriterVideoInput)")
+        }
+    }
+    
+    fileprivate func makeFaceWithCIImage(inputImage: CIImage, faceObjcet: AVMetadataFaceObject) -> CIImage {
+        let filter = CIFilter(name: "CIPixellate")
+        filter?.setValue(inputImage, forKey: kCIInputImageKey)
+        filter?.setValue(max(inputImage.extent.size.width, inputImage.extent.size.height) / 60, forKey: kCIInputScaleKey)
+        let fullPixellatedImage = filter?.outputImage
+        
+        var maskImage: CIImage!
+        let faceBounds = faceObjcet.bounds
+        
+        let centerX = inputImage.extent.size.width * (faceBounds.origin.x + faceBounds.size.width / 2)
+        let centerY = inputImage.extent.size.height * (1 - faceBounds.origin.y - faceBounds.size.height / 2)
+        let radius = faceBounds.size.width * inputImage.extent.size.width / 2
+        let radialGradient = CIFilter(name: "CIRadialGradient",
+                                      withInputParameters: [
+                                        "inputRadius0" : radius,
+                                        "inputRadius1" : radius + 1,
+                                        "inputColor0" : CIColor(red: 0, green: 1, blue: 0, alpha: 1),
+                                        "inputColor1" : CIColor(red: 0, green: 0, blue: 0, alpha: 0),
+                                        kCIInputCenterKey : CIVector(x: centerX, y: centerY)
+            ])!
+        
+        let radiaGradientOutputImage = radialGradient.outputImage!.cropped(to: inputImage.extent)
+        if maskImage == nil {
+            maskImage = radiaGradientOutputImage
+        } else {
+            print(radiaGradientOutputImage)
+            maskImage = CIFilter(name: "CISourceOverCompositing",
+                                 withInputParameters: [
+                                    kCIInputImageKey : radiaGradientOutputImage,
+                                    kCIInputBackgroundImageKey : maskImage
+                ])!.outputImage
+        }
+        
+        let blendFilter = CIFilter(name: "CIBlendWithMask")!
+        blendFilter.setValue(fullPixellatedImage, forKey: kCIInputImageKey)
+        blendFilter.setValue(inputImage, forKey: kCIInputBackgroundImageKey)
+        blendFilter.setValue(maskImage, forKey: kCIInputMaskImageKey)
+        
+        return blendFilter.outputImage!
+    }
+    
+    // 预览缩放
     @objc fileprivate func handleScaleGesture(recoginer: UIPinchGestureRecognizer) {
         guard let previewPhotoLayer = previewPhotoLayer else { return }
         var allTouchsAreOnThePreviewLayer = true
@@ -317,14 +428,14 @@ class BaseCameraViewController: UIViewController {
             captureSession.commitConfiguration()
         }
         
-        var sessionPreset: AVCaptureSession.Preset = .photo
+        var sessionPreset: AVCaptureSession.Preset!
         switch((height, width)) {
         case (640, 480):
-            sessionPreset = .vga640x480
+            sessionPreset = .hd1280x720
         case (1280, 720):
-            sessionPreset = .hd4K3840x2160
+            sessionPreset = .hd1280x720
         default:
-            sessionPreset = .photo
+            sessionPreset = .hd1280x720
         }
         if captureSession.canSetSessionPreset(sessionPreset) {
             captureSession.sessionPreset = sessionPreset
@@ -338,11 +449,12 @@ class BaseCameraViewController: UIViewController {
             _previewLayer = previewPhotoLayer
         }
         guard let device = captureDevice, let previewLayer = _previewLayer else { return }
-        var convertedPoint = previewLayer.captureDevicePointConverted(fromLayerPoint: point)
+        var convertedPoint = previewLayer.convert(point, from: previewLayer.superlayer)
+        
         print("yfk \(point) convert: \(convertedPoint)")
-//        let videoWidth = view.width
-//        let videoHeight = videoWidth * videoScale
-//        var point = CGPoint(x: CGFloat(point.x / view.width), y: CGFloat(point.y / view.height))
+        let videoWidth = view.width
+        let videoHeight = videoWidth * videoScale
+        convertedPoint = CGPoint(x: CGFloat(convertedPoint.x / view.width), y: CGFloat(convertedPoint.y / view.height))
         if isFrontCamera {
             convertedPoint = CGPoint(x: 1 - convertedPoint.x, y: 1 - convertedPoint.y)
         }
@@ -432,6 +544,7 @@ class BaseCameraViewController: UIViewController {
             }
             
             isFrontCamera = !isFrontCamera
+            faceObjcet = nil
             
             OnMainThreadAsync {
                 if isAnimate {
@@ -460,29 +573,58 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
+    // 拍照
     @objc func captureImage(sender: UIButton) {
-        guard let ciImage = ciImage, isWriting == true else { return }
+        guard let ciImage = ciImage, isWriting == false else { return }
         
         sender.isEnabled = false
         captureSession.stopRunning()
         
-        let cgImage = context.createCGImage(ciImage, from: ciImage.extent)
-        
-        PHPhotoLibrary
-        
-        OnMainThreadAsync {
-            if let videoConnection = self.photoOutput?.connection(with: .video) {
-                videoConnection.videoScaleAndCropFactor = self.effectScale
-                let capturePhotoSetting = AVCapturePhotoSettings.init(from: photoSetting)
-                var videoOrientation = (previewLayer.connection?.videoOrientation)!
-                if videoOrientation == .landscapeLeft {
-                    videoOrientation = .landscapeRight
-                } else if videoOrientation == .landscapeRight {
-                    videoOrientation = .landscapeLeft
-                }
-                videoConnection.videoOrientation = videoOrientation
-                self.photoOutput?.capturePhoto(with: capturePhotoSetting, delegate: self)
+        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else { return }
+        let captureImage = UIImage(cgImage: cgImage)
+        do {
+            try PHPhotoLibrary.shared().performChangesAndWait {
+                PHAssetChangeRequest.creationRequestForAsset(from: captureImage)
             }
+            captureSession.startRunning()
+            sender.isEnabled = true
+        } catch let error as NSError {
+            OnMainThreadAsync {
+                let alert = UIAlertController(title: "错误", message: error.localizedDescription, preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+        }
+        capturedImage = captureImage
+        OnMainThreadAsync {
+            self.capturedImageHandler()
+        }
+    }
+    
+    // 录制视频
+    @objc func record() {
+        if isWriting {
+            isWriting = false
+            assetWriterPixelBufferInput = nil
+            assetWriter?.finishWriting{ [unowned self] () -> Void in
+                OnMainThreadAsync {
+                    self.videoRecordWillFinish()
+                }
+                self.saveMovieToCameraRoll {
+                    OnMainThreadAsync {
+                        self.videoRecordFinished()
+                    }
+                }
+            }
+        } else {
+            guard let currentSampleTime = currentSampleTime else { return }
+            createWriter()
+            OnMainThreadAsync {
+                self.videoRecordProcessing()
+            }
+            assetWriter?.startWriting()
+            assetWriter?.startSession(atSourceTime: currentSampleTime)
+            isWriting = true
         }
     }
     
@@ -513,7 +655,17 @@ class BaseCameraViewController: UIViewController {
         
     }
     
+    func videoRecordProcessing() {
+        
+    }
     
+    func videoRecordWillFinish() {
+        
+    }
+    
+    func videoRecordFinished() {
+        
+    }
 }
 
 extension BaseCameraViewController: AVCapturePhotoCaptureDelegate {
@@ -530,42 +682,76 @@ extension BaseCameraViewController: AVCapturePhotoCaptureDelegate {
 
 extension BaseCameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        
-        var outputImage = CIImage(cvPixelBuffer: imageBuffer)
-        
-        let orientation = UIDevice.current.orientation
-        var transform: CGAffineTransform!
-        
-        switch orientation {
-        case .portrait:
-            transform = CGAffineTransform(rotationAngle: CGFloat(-.pi / 2.0))
-        case .portraitUpsideDown:
-            transform = CGAffineTransform(rotationAngle: CGFloat(.pi / 2.0))
-        case .landscapeRight:
-            transform = CGAffineTransform(rotationAngle: CGFloat(Float.pi))
-        default:
-            transform = CGAffineTransform(rotationAngle: 0)
-        }
-        
-        outputImage = outputImage.transformed(by: transform)
-        
-        if filter != nil {
-            filter?.setValue(outputImage, forKey: kCIInputImageKey)
-            if filter?.outputImage != nil {
-                outputImage = filter!.outputImage!
+        autoreleasepool {
+            guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+            
+            let formatDescription = CMSampleBufferGetFormatDescription(sampleBuffer)!
+            currentVideoDimensions = CMVideoFormatDescriptionGetDimensions(formatDescription)
+            currentSampleTime = CMSampleBufferGetOutputPresentationTimeStamp(sampleBuffer)
+            
+            var outputImage = CIImage(cvPixelBuffer: imageBuffer)
+            
+            if filter != nil {
+                filter?.setValue(outputImage, forKey: kCIInputImageKey)
+                if filter?.outputImage != nil {
+                    outputImage = filter!.outputImage!
+                }
             }
-        }
-        
-        let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
-        OnMainThreadAsync {
-            self.videoLayer?.contents = cgImage
+            
+            if faceObjcet != nil {
+                outputImage = makeFaceWithCIImage(inputImage: outputImage, faceObjcet: faceObjcet!)
+            }
+            
+            if isWriting {
+                if assetWriterPixelBufferInput?.assetWriterInput.isReadyForMoreMediaData == true {
+                    var newPixelBuffer: CVPixelBuffer? = nil
+                    
+                    CVPixelBufferPoolCreatePixelBuffer(nil, assetWriterPixelBufferInput!.pixelBufferPool!, &newPixelBuffer)
+                    
+                    context.render(outputImage, to: newPixelBuffer!, bounds: outputImage.extent, colorSpace: nil)
+                    
+                    let success = assetWriterPixelBufferInput?.append(newPixelBuffer!, withPresentationTime: self.currentSampleTime!)
+                    
+                    if success == false {
+                        print("Pixel Buffer没有附加成功")
+                    }
+                }
+            }
+            
+            let orientation = UIDevice.current.orientation
+            var transform: CGAffineTransform!
+            
+            switch orientation {
+            case .portrait:
+                transform = CGAffineTransform(rotationAngle: CGFloat(-.pi / 2.0))
+            case .portraitUpsideDown:
+                transform = CGAffineTransform(rotationAngle: CGFloat(.pi / 2.0))
+            case .landscapeRight:
+                transform = CGAffineTransform(rotationAngle: CGFloat(Float.pi))
+            default:
+                transform = CGAffineTransform(rotationAngle: 0)
+            }
+            
+            outputImage = outputImage.transformed(by: transform)
+            
+            let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
+            ciImage = outputImage
+            
+            OnMainThreadAsync {
+                self.previewVideoLayer?.contents = cgImage
+            }
         }
     }
 }
 
 extension BaseCameraViewController: AVCaptureMetadataOutputObjectsDelegate {
-    
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        if metadataObjects.count > 0 {
+            faceObjcet = metadataObjects.first as? AVMetadataFaceObject
+        } else {
+            faceObjcet = nil
+        }
+    }
 }
 
 extension BaseCameraViewController: UIGestureRecognizerDelegate {

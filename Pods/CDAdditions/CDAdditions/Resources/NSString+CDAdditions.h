@@ -27,5 +27,8 @@
 - (CGSize)cd_sizeWithFont:(UIFont *)font forWidth:(CGFloat)width lineBreakMode:(NSLineBreakMode)lineBreakMode lineSpacing:(CGFloat)lineSpacing;
 - (CGSize)cd_sizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakMode;
 
+#pragma mark - 格式化
++ (NSString *)currentDate;
+
 @end
 
