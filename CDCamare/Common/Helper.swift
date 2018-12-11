@@ -36,3 +36,15 @@ func touchShake() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
 }
+
+extension CGFloat {
+    func toFloat() -> Float {
+        return Float(self)
+    }
+}
+
+extension Float {
+    func toCGFloat() -> CGFloat {
+        return CGFloat(self)
+    }
+}

@@ -8,12 +8,14 @@
 
 fileprivate class SegmentLabel: UILabel {
     fileprivate var redDot: UIView
-    fileprivate var isShowRedDot: false {
-        set {
-            
-        }
-        get {
-            
+    
+    fileprivate var isShowRedDot: Bool = false {
+        didSet {
+            if isShowRedDot {
+                redDot.isHidden = false
+            } else {
+                redDot.isHidden = true
+            }
         }
     }
     
@@ -62,5 +64,53 @@ fileprivate class SegmentLabel: UILabel {
 }
 
 class SegmentView: UIView {
+    fileprivate var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.isPagingEnabled = false
+        view.bounces = false
+        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
+        return view
+    }()
+    fileprivate var indicateLine: CALayer = {
+        let layer = CALayer()
+        layer.backgroundColor = UIColor.white.cgColor
+        layer.masksToBounds = true
+        layer.cornerRadius = 3 / 2
+        return layer
+    }()
+    
+    fileprivate var titleArray: Array<String>?
+    fileprivate var labels: Array<SegmentLabel>?
+    fileprivate let kUILabelWidth: Float = 70
+    fileprivate var blankLeft: Float!
+    
+    init(titleArray: Array<String>) {
+        super.init(frame: CGRect(x: 0, y: 0, width: ScreenWidth, height: 50))
+        
+        self.titleArray = titleArray
+        blankLeft = ScreenWidth.toFloat() / 2 - kUILabelWidth / 2
+        
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(clickTitle(ges:)))
+        addGestureRecognizer(singleTap)
+        setupUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func setupUI() {
+        scrollView.frame = frame
+        scrollView.delegate = self
+        addSubview(scrollView)
+    }
+    
+    @objc fileprivate func clickTitle(ges: UIGestureRecognizer) {
+        
+    }
+}
+
+extension SegmentView: UIScrollViewDelegate {
     
 }
