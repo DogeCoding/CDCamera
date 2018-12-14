@@ -73,11 +73,18 @@ class HomeCameraViewController: BaseCameraViewController {
     fileprivate func setupBottomControl() {
         captureBtn = BaseButton(type: .custom)
         captureBtn?.setImage(UIImage(named: "camera_switch"), for: .normal)
-        captureBtn?.size = CGSize(width: 50, height: 50)
-        captureBtn?.bottom = view.height - 10
+        captureBtn?.size = CGSize(width: 30, height: 30)
+        captureBtn?.bottom = view.height - 60
         captureBtn?.centerX = view.centerX
         captureBtn?.addTarget(self, action: #selector(record), for: .touchUpInside)
         view.addSubview(captureBtn!)
+        
+        let bottomSegmentView = SegmentView(titleArray: ["拍照", "录像", "社区"])
+        bottomSegmentView.origin = CGPoint(x: 0, y: view.height - 50)
+        bottomSegmentView.height = 50
+        bottomSegmentView.delegate = self
+        
+        view.addSubview(bottomSegmentView)
     }
     
     override func capturedImageHandler() {
@@ -162,6 +169,12 @@ extension HomeCameraViewController: HomeTopSupportViewDelegate {
     }
     
     func clickCameraSetting() {
+        
+    }
+}
+
+extension HomeCameraViewController: SegmentViewDelegate {
+    func switchTitle(index: Int) {
         
     }
 }

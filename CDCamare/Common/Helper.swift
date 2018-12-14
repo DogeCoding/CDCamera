@@ -41,10 +41,60 @@ extension CGFloat {
     func toFloat() -> Float {
         return Float(self)
     }
+    
+    var float: Float {
+        return Float(self)
+    }
+    
+    var int: Int {
+        return Int(self)
+    }
 }
 
 extension Float {
     func toCGFloat() -> CGFloat {
         return CGFloat(self)
+    }
+    
+    var cgFloat: CGFloat {
+        return CGFloat(self)
+    }
+    
+    var int: Int {
+        return Int(self)
+    }
+}
+
+extension Int {
+    func toFloat() -> Float {
+        return Float(self)
+    }
+    
+    var cgFloat: CGFloat {
+        return CGFloat(self)
+    }
+    
+    var float: Float {
+        return Float(self)
+    }
+}
+
+extension Double {
+    var float: Float {
+        return Float(self)
+    }
+    
+    var int: Int {
+        return Int(self)
+    }
+    
+    var cgFloat: CGFloat {
+        return CGFloat(self)
+    }
+}
+
+extension Array {
+    subscript (safe index: Int) -> Element? {
+        return (0..<count).contains(index) ? self[index] : nil
     }
 }
