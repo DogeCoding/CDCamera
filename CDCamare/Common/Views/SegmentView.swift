@@ -62,14 +62,7 @@ protocol SegmentViewDelegate: NSObjectProtocol {
 }
 
 class SegmentView: UIView {
-    fileprivate var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.isPagingEnabled = false
-        view.bounces = false
-        view.showsHorizontalScrollIndicator = false
-        view.showsVerticalScrollIndicator = false
-        return view
-    }()
+    fileprivate var contentView: UIView = UIView()
     fileprivate var indicateLine: CALayer = {
         let layer = CALayer()
         layer.backgroundColor = UIColor.white.cgColor
@@ -83,6 +76,7 @@ class SegmentView: UIView {
     fileprivate let kUILabelWidth: Float = 70
     fileprivate let kUILabelHeight: Float = 50
     fileprivate var blankLeft: Float = 0
+    fileprivate var isDragging: Bool = false
     
     var currentIndex = 0
     var normalFont: UIFont = UIFont.boldPingFangFont(withSize: 16) {
@@ -142,6 +136,7 @@ class SegmentView: UIView {
         
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(clickTitle(ges:)))
         addGestureRecognizer(singleTap)
+        let singlePan = UIPanGestureRecognizer(target: self, action: <#T##Selector?#>)
         setupUI()
     }
     
@@ -150,11 +145,8 @@ class SegmentView: UIView {
     }
     
     fileprivate func setupUI() {
-        scrollView.frame = frame
-        scrollView.delegate = self
-        addSubview(scrollView)
-        
-        scrollView.contentSize = CGSize(width: (titleArray.count.toFloat() * kUILabelWidth + 2 * blankLeft).toCGFloat(), height: height)
+        contentView.frame = CGRect(x: 0, y: 0, width: titleArray.count.cgFloat * kUILabelWidth.cgFloat + 2 * blankLeft.cgFloat, height: height)
+        addSubview(contentView)
         
         for i in 0..<titleArray.count {
             let label = SegmentLabel(frame: CGRect(x: 0, y: 0, width: kUILabelWidth.toCGFloat(), height: kUILabelHeight.toCGFloat()))
@@ -164,7 +156,7 @@ class SegmentView: UIView {
             label.top = 0
             label.left = i.toFloat().toCGFloat() * label.width + blankLeft.toCGFloat()
             labels.append(label)
-            scrollView.addSubview(label)
+            contentView.addSubview(label)
             if i == currentIndex {
                 updateUI(index: i, isSelect: true)
             } else {
@@ -176,17 +168,25 @@ class SegmentView: UIView {
         layer.addSublayer(indicateLine)
         
         let point = CGPoint(x: kUILabelWidth.cgFloat * currentIndex.cgFloat, y: 0)
-        scrollView.setContentOffset(point, animated: false)
+        contentView.left = -point.x
     }
     
     @objc fileprivate func clickTitle(ges: UIGestureRecognizer) {
         guard ges.state == .recognized else { return }
-        let point = ges.location(in: scrollView)
+        let point = ges.location(in: contentView)
         guard point.x > blankLeft.cgFloat else { return }
         
         let titleIndex = floor((point.x - blankLeft.cgFloat)/kUILabelWidth.cgFloat).int
         if titleIndex < titleArray.count {
             select(index: titleIndex)
+        }
+    }
+    
+    @objc fileprivate func panGestureAction(ges: UIGestureRecognizer) {
+        let currentPoint = ges.location(in: contentView)
+        if isDragging && fabs(currentPoint.x) > kUILabelWidth.cgFloat {
+            isDragging = false
+            if currentPoint.x > 0 && contentView.left
         }
     }
     
