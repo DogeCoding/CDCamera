@@ -184,7 +184,7 @@ class SegmentView: UIView {
         let point = ges.location(in: scrollView)
         guard point.x > blankLeft.cgFloat else { return }
         
-        let titleIndex = floor(point.x - blankLeft.cgFloat).int
+        let titleIndex = floor((point.x - blankLeft.cgFloat)/kUILabelWidth.cgFloat).int
         if titleIndex < titleArray.count {
             select(index: titleIndex)
         }
@@ -242,4 +242,6 @@ extension SegmentView: UIScrollViewDelegate {
         
         select(index: index)
     }
+    
+    
 }

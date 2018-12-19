@@ -79,7 +79,7 @@ class HomeCameraViewController: BaseCameraViewController {
         captureBtn?.addTarget(self, action: #selector(record), for: .touchUpInside)
         view.addSubview(captureBtn!)
         
-        let bottomSegmentView = SegmentView(titleArray: ["拍照", "录像", "社区"])
+        let bottomSegmentView = SegmentView(titleArray: ["拍照", "录像", "社区", "test1", "test2"])
         bottomSegmentView.origin = CGPoint(x: 0, y: view.height - 50)
         bottomSegmentView.height = 50
         bottomSegmentView.delegate = self
