@@ -136,7 +136,10 @@ class SegmentView: UIView {
         
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(clickTitle(ges:)))
         addGestureRecognizer(singleTap)
-        let singlePan = UIPanGestureRecognizer(target: self, action: <#T##Selector?#>)
+        let singlePan = UIPanGestureRecognizer(target: self, action: #selector(panGestureAction(ges:)))
+        singlePan.delegate = self
+        addGestureRecognizer(singlePan)
+        singleTap.require(toFail: singlePan)
         setupUI()
     }
     
@@ -182,11 +185,16 @@ class SegmentView: UIView {
         }
     }
     
-    @objc fileprivate func panGestureAction(ges: UIGestureRecognizer) {
-        let currentPoint = ges.location(in: contentView)
+    @objc fileprivate func panGestureAction(ges: UIPanGestureRecognizer) {
+        let currentPoint = ges.translation(in: contentView)
+        
         if isDragging && fabs(currentPoint.x) > kUILabelWidth.cgFloat {
             isDragging = false
-            if currentPoint.x > 0 && contentView.left
+            if currentPoint.x > 0 && currentIndex > 0 {
+                select(index: currentIndex-1)
+            } else if currentPoint.x < 0 && currentIndex < titleArray.count - 1 {
+                select(index: currentIndex+1)
+            }
         }
     }
     
@@ -199,10 +207,11 @@ class SegmentView: UIView {
     
     fileprivate func select(index: Int) {
         labels[safe: index]?.isShowRedDot = false
+        touchShake()
         
-        let point = CGPoint(x: kUILabelWidth.cgFloat * index.cgFloat, y: 0)
+        let left = -(index.cgFloat * kUILabelWidth.cgFloat)
         UIView.animate(withDuration: 0.2, animations: {
-            self.scrollView.contentOffset = point
+            self.contentView.left = left
         }) { (finished) in
             if self.currentIndex != index {
                 self.updateUI(index: self.currentIndex, isSelect: false)
@@ -224,24 +233,9 @@ class SegmentView: UIView {
     }
 }
 
-extension SegmentView: UIScrollViewDelegate {
-
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if !decelerate {
-            let offset = scrollView.contentOffset
-            let index = round(offset.x / kUILabelWidth.cgFloat).int
-            
-            select(index: index)
-        }
+extension SegmentView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        isDragging = true
+        return true
     }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset
-        let index = round(offset.x / kUILabelWidth.cgFloat).int
-        
-        select(index: index)
-    }
-    
-    
 }

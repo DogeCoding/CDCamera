@@ -19,4 +19,12 @@ class BaseButton: UIButton {
         titleEdgeInsets = UIEdgeInsetsMake((width + iconWidth)/2 - vPadding, (width - labelWidth)/2 - iconWidth, 0, 0)
     }
     
+    var imageCustomFrame: CGRect = .zero
+    
+    var imageCustomInsets: UIEdgeInsets = .zero {
+        didSet {
+            
+        }
+    }
+    
 }
