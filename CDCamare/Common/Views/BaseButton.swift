@@ -8,23 +8,43 @@
 
 class BaseButton: UIButton {
     
-    func verticalButton(vPadding: CGFloat) {
-        guard let imageView = imageView, let titleLabel = titleLabel, let titleText = titleLabel.text else { return }
-        contentVerticalAlignment = .top
-        contentHorizontalAlignment = .left
-        let iconWidth = width-10
-        imageView.size = CGSize(width: iconWidth, height: iconWidth)
-        let labelWidth = NSString(string: titleText).cd_size(with: titleLabel.font).width
-        imageEdgeInsets = UIEdgeInsetsMake((width - iconWidth)/2 - vPadding, (width - iconWidth)/2, 0, 0)
-        titleEdgeInsets = UIEdgeInsetsMake((width + iconWidth)/2 - vPadding, (width - labelWidth)/2 - iconWidth, 0, 0)
-    }
-    
     var imageCustomFrame: CGRect = .zero
-    
     var imageCustomInsets: UIEdgeInsets = .zero {
         didSet {
+            imageCustomFrame = CGRect(x: oldValue.left, y: oldValue.top,
+                                      width: width - oldValue.left - oldValue.right,
+                                      height: height - oldValue.top - oldValue.bottom)
             
         }
     }
     
+    fileprivate var hasManualTitleCustomFrmae: Bool = false
+    var titleCustomFrame: CGRect = .zero {
+        didSet {
+            hasManualTitleCustomFrmae = true
+        }
+    }
+    var titleCustomInsets: UIEdgeInsets = .zero {
+        didSet {
+            titleCustomFrame = CGRect(x: oldValue.left, y: oldValue.top,
+                                      width: width - oldValue.left - oldValue.right,
+                                      height: height - oldValue.top - oldValue.bottom)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if imageCustomInsets != .zero {
+            imageView?.frame = imageCustomFrame
+        }
+        if titleCustomInsets != .zero {
+            titleLabel?.frame = titleCustomFrame
+        }
+        if hasManualTitleCustomFrmae {
+            titleLabel?.frame = titleCustomFrame
+        }
+    }
+    
+    func roundImage() {
+    }
 }
