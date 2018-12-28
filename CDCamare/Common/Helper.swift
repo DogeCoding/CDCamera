@@ -98,3 +98,9 @@ extension Array {
         return (0..<count).contains(index) ? self[index] : nil
     }
 }
+
+extension Dictionary where Value == Optional<String> {
+    subscript (safe key: Key) -> Value {
+        return self[key] ?? ""
+    }
+}
