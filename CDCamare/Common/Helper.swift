@@ -103,4 +103,15 @@ extension Dictionary where Value == Optional<String> {
     subscript (safe key: Key) -> Value {
         return self[key] ?? ""
     }
+    
+    func stringForKey(key: String) -> String {
+        let ans = key
+        return ans
+    }
+}
+
+extension Dictionary where Value == String {
+    subscript (safe key: Key) -> Value {
+        return self[key] ?? ""
+    }
 }

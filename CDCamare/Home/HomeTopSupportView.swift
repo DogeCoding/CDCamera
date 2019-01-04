@@ -41,16 +41,9 @@ class HomeTopSupportView: UIView {
     }
     
     fileprivate func createButton(withImageName name: String, title: String, selector: Selector) -> BaseButton {
-        let btn = BaseButton(type: .custom)
-        btn.size = CGSize(width: btnWidth, height: btnWidth)
-//        btn.setImage(UIImage(named: name), for: .normal)
-        btn.setTitle(title, for: .normal)
-        btn.setTitleColor(.white, for: .normal)
-        btn.sizeToFit()
-        btn.height = btnWidth
-        btn.titleLabel?.font = UIFont.thinPingFangFont(withSize: 12)
-//        btn.verticalButton(vPadding: 1)
-        btn.addTarget(self, action: selector, for: .touchUpInside)
+        let btn = BaseButton.button(CGRect(x: 0, y: 0, width: btnWidth, height: btnWidth+10), target: self, action: selector, info: ["normal_title":title, "normal_img":name], defaulutPressed: false)
+        btn.imageCustomFrame = CGRect(x: 5, y: 3, width: btnWidth-10, height: btnWidth-10)
+        btn.titleCustomFrame = CGRect(x: 0, y: 3 + btnWidth - 10 + 3, width: btnWidth, height: 10+btnWidth - (3 + btnWidth - 10 + 3))
         return btn
     }
     
