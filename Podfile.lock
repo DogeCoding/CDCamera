@@ -12,7 +12,7 @@ PODS:
   - RxSwift (4.4.0):
     - RxAtomic (~> 4.4)
   - SnapKit (4.2.0)
-  - TZImagePickerController (3.1.6)
+  - TZImagePickerController (3.1.8)
 
 DEPENDENCIES:
   - CDAdditions
@@ -54,7 +54,7 @@ SPEC CHECKSUMS:
   RxCocoa: df63ebf7b9a70d6b4eeea407ed5dd4efc8979749
   RxSwift: 5976ecd04fc2fefd648827c23de5e11157faa973
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  TZImagePickerController: 733aa6fd217f87c61656764f8e76b2137b6c8f47
+  TZImagePickerController: 5d2bed3df15176ab9c4c9afc3139a74f8b92425b
 
 PODFILE CHECKSUM: 4b02657f2eac14e92dde8108fb08f5a05b38b976
 

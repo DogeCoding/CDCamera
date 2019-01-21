@@ -21,7 +21,7 @@ class AuthenticationHelper {
                     if let alertVC = UIAlertController.alert(withTitle: "未能获取到相机权限", message: "您未允许’CDCamera’访问您的照片，请在’设置-隐私-照片’中更改设置", cancelTitle: "取消", cancelHandle: nil, otherTitle: "知道了", otherHandle: { (action) in
                         UIApplication.shared.openScheme(UIApplicationOpenSettingsURLString)
                     }) {
-                        RootViewController.shared.navigationController?.pushViewController(alertVC, animated: false)
+                        RootViewController.shared.navigationController?.present(alertVC, animated: true, completion: nil)
                     }
                 }
             }
@@ -37,7 +37,7 @@ class AuthenticationHelper {
                     if let alertVC = UIAlertController.alert(withTitle: "未能获取到相机权限", message: "您未允许’CDCamera’访问您的照片，请在’设置-隐私-照片’中更改设置", cancelTitle: "取消", cancelHandle: nil, otherTitle: "知道了", otherHandle: { (action) in
                         UIApplication.shared.openScheme(UIApplicationOpenSettingsURLString)
                     }) {
-                        RootViewController.shared.navigationController?.pushViewController(alertVC, animated: false)
+                        RootViewController.shared.navigationController?.present(alertVC, animated: true, completion: nil)
                     }
                 }
             }

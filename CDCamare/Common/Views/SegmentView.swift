@@ -188,7 +188,7 @@ class SegmentView: UIView {
     @objc fileprivate func panGestureAction(ges: UIPanGestureRecognizer) {
         let currentPoint = ges.translation(in: contentView)
         
-        if isDragging && fabs(currentPoint.x) > kUILabelWidth.cgFloat {
+        if isDragging && fabs(currentPoint.x) > kUILabelWidth.cgFloat / 2 {
             isDragging = false
             if currentPoint.x > 0 && currentIndex > 0 {
                 select(index: currentIndex-1)

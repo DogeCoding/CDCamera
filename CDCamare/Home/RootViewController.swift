@@ -71,6 +71,7 @@ class RootViewController: UIViewController {
     
     @objc fileprivate func cameraAction() {
         touchShake()
+        
         AuthenticationHelper.camera {
             AuthenticationHelper.photo {
                 dispatch_safe_main_async {
