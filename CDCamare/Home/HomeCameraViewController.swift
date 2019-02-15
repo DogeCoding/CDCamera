@@ -17,6 +17,8 @@ class HomeCameraViewController: BaseCameraViewController {
     fileprivate var topControlView: HomeTopControlView?
     fileprivate var topSupportView: HomeTopSupportView?
     
+    fileprivate var privateCameraVC = PrivateCameraViewController()
+    
     fileprivate var filterNames: [String] = {
         return ["CIColorInvert", "CIPhotoEffectMono", "CIPhotoEffectInstant", "CIPhotoEffectTransfer"]
     }()
@@ -83,6 +85,8 @@ class HomeCameraViewController: BaseCameraViewController {
         bottomSegmentView.origin = CGPoint(x: 0, y: view.height - 50)
         bottomSegmentView.height = 50
         bottomSegmentView.delegate = self
+        
+        addChildViewController(privateCameraVC)
         
         view.addSubview(bottomSegmentView)
     }
@@ -175,7 +179,16 @@ extension HomeCameraViewController: HomeTopSupportViewDelegate {
 
 extension HomeCameraViewController: SegmentViewDelegate {
     func switchTitle(index: Int) {
+        switch index {
+        case 0:
+            privateCameraVC.view.removeFromSuperview()
         
+        case 1:
+            view.addSubview(privateCameraVC.view)
+            
+        default: break
+            
+        }
     }
 }
 
