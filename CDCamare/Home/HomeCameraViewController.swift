@@ -11,7 +11,7 @@ import TZImagePickerController
 class HomeCameraViewController: BaseCameraViewController {
     
     fileprivate var switchCameraBtn: BaseButton?
-    fileprivate var captureBtn: BaseButton?
+    fileprivate var shootButton: BaseButton?
     fileprivate lazy var imageView = UIImageView()
     
     fileprivate var topControlView: HomeTopControlView?
@@ -22,6 +22,8 @@ class HomeCameraViewController: BaseCameraViewController {
     fileprivate var filterNames: [String] = {
         return ["CIColorInvert", "CIPhotoEffectMono", "CIPhotoEffectInstant", "CIPhotoEffectTransfer"]
     }()
+	
+	fileprivate var currentBottomTitleIndex = 0;
     
     fileprivate var focusView: UIView = {
         let view = UIView()
@@ -34,6 +36,7 @@ class HomeCameraViewController: BaseCameraViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+		
         setupCommonUI()
         setupTopControl()
         setupBottomControl()
@@ -73,22 +76,22 @@ class HomeCameraViewController: BaseCameraViewController {
     }
     
     fileprivate func setupBottomControl() {
-        captureBtn = BaseButton(type: .custom)
-        captureBtn?.setImage(UIImage(named: "camera_switch"), for: .normal)
-        captureBtn?.size = CGSize(width: 30, height: 30)
-        captureBtn?.bottom = view.height - 60
-        captureBtn?.centerX = view.centerX
-        captureBtn?.addTarget(self, action: #selector(record), for: .touchUpInside)
-        view.addSubview(captureBtn!)
-        
         let bottomSegmentView = SegmentView(titleArray: ["拍照", "录像", "社区", "test1", "test2"])
         bottomSegmentView.origin = CGPoint(x: 0, y: view.height - 50)
         bottomSegmentView.height = 50
         bottomSegmentView.delegate = self
-        
-        addChildViewController(privateCameraVC)
-        
         view.addSubview(bottomSegmentView)
+		currentBottomTitleIndex = 0;
+		
+		shootButton = BaseButton(type: .custom)
+        shootButton?.setImage(UIImage(named: "camera_switch"), for: .normal)
+        shootButton?.size = CGSize(width: 30, height: 30)
+        shootButton?.bottom = view.height - 60
+        shootButton?.centerX = view.centerX
+		shootButton?.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+        view.addSubview(shootButton!)
+		
+//        addChildViewController(privateCameraVC)
     }
     
     override func capturedImageHandler() {
@@ -99,7 +102,7 @@ class HomeCameraViewController: BaseCameraViewController {
         view.bringSubview(toFront: imageView)
     }
     
-    // MARK: --- Actions ---
+    // MARK: - Actions
     @objc fileprivate func imageViewTapGesture() {
         imageView.isHidden = true
     }
@@ -179,12 +182,18 @@ extension HomeCameraViewController: HomeTopSupportViewDelegate {
 
 extension HomeCameraViewController: SegmentViewDelegate {
     func switchTitle(index: Int) {
+		if index == currentBottomTitleIndex {
+			return;
+		}
+		currentBottomTitleIndex = index
         switch index {
         case 0:
-            privateCameraVC.view.removeFromSuperview()
-        
+			shootButton?.removeTarget(self, action: #selector(record), for: .touchUpInside)
+			shootButton?.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+			
         case 1:
-            view.addSubview(privateCameraVC.view)
+			shootButton?.removeTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+			shootButton?.addTarget(self, action: #selector(record), for: .touchUpInside)
             
         default: break
             

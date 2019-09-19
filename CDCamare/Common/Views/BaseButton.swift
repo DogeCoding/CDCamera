@@ -87,7 +87,7 @@ class BaseButton: UIButton {
     }
     
     func roundImage() {
-        cd_applyCornerborder(height/2, byRoundingCorners: .allCorners, borderWidth: 0, borderColor: .clear)
+        cd_applyCornerborder(height / 2, byRoundingCorners: .allCorners, borderWidth: 0, borderColor: .clear)
     }
     
     var normalTitle : String = ""

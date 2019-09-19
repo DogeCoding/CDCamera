@@ -24,6 +24,7 @@
 		DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EAC2199AF6A000B247F /* MacroFile.swift */; };
 		DD628EB7219AF92D000B247F /* BaseCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD628EB6219AF92D000B247F /* BaseCameraViewController.swift */; };
 		DD79B5C021A5427200003C92 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD79B5BF21A5427200003C92 /* Helper.swift */; };
+		DD9EF2FB2333758B00307A1D /* HomeShootButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD9EF2FA2333758A00307A1D /* HomeShootButton.swift */; };
 		DDA53A1F21A64A4E007986D8 /* AuthenticationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA53A1E21A64A4E007986D8 /* AuthenticationHelper.swift */; };
 		DDA98C4F21AA514E008D4AAC /* HomeTopControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA98C4E21AA514E008D4AAC /* HomeTopControlView.swift */; };
 		DDFDB8C32215454400D7003E /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFDB8BE2215454400D7003E /* RootViewController.swift */; };
@@ -124,6 +125,7 @@
 		DD628EAC2199AF6A000B247F /* MacroFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroFile.swift; sourceTree = "<group>"; };
 		DD628EB6219AF92D000B247F /* BaseCameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCameraViewController.swift; sourceTree = "<group>"; };
 		DD79B5BF21A5427200003C92 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		DD9EF2FA2333758A00307A1D /* HomeShootButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeShootButton.swift; sourceTree = "<group>"; };
 		DDA53A1E21A64A4E007986D8 /* AuthenticationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationHelper.swift; sourceTree = "<group>"; };
 		DDA98C4E21AA514E008D4AAC /* HomeTopControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTopControlView.swift; sourceTree = "<group>"; };
 		DDFDB8BE2215454400D7003E /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			children = (
 				DDA98C4E21AA514E008D4AAC /* HomeTopControlView.swift */,
 				DD4637C621AE9D640065CACB /* HomeTopSupportView.swift */,
+				DD9EF2FA2333758A00307A1D /* HomeShootButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 			files = (
 				DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */,
 				DDFDB8C82215462B00D7003E /* PrivateCameraViewController.swift in Sources */,
+				DD9EF2FB2333758B00307A1D /* HomeShootButton.swift in Sources */,
 				DD79B5C021A5427200003C92 /* Helper.swift in Sources */,
 				DD628EB7219AF92D000B247F /* BaseCameraViewController.swift in Sources */,
 				DD2F83D521A7A4AF00345D1E /* BaseButton.swift in Sources */,
@@ -749,7 +753,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = codingdoge.appID.camera;
+				PRODUCT_BUNDLE_IDENTIFIER = J475J568UV.com.games.zsta.binguo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";
@@ -774,7 +778,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = codingdoge.appID.camera;
+				PRODUCT_BUNDLE_IDENTIFIER = J475J568UV.com.games.zsta.binguo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";

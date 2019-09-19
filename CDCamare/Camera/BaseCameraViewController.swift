@@ -114,7 +114,7 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
-    // MARK: --- Life Cricle ---
+    // MARK: - Life Cricle
     override func viewDidLoad() {
         setupCaptureSession()
         _ = configureCaptureDevice(device: captureDevice)
@@ -140,7 +140,7 @@ class BaseCameraViewController: UIViewController {
         captureSession.stopRunning()
     }
     
-    // MARK: --- Private ---
+    // MARK: - Private
     fileprivate func setupCaptureSession() {
         guard let device = captureDevice else { return }
     
@@ -420,7 +420,7 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
-    // MARK: --- 相机操作 ---
+    // MARK: - 相机操作
     // 更改比例
     @objc func changePreset(width: CGFloat, height: CGFloat) {
         captureSession.beginConfiguration()
