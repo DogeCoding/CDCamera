@@ -26,12 +26,34 @@ class HomeShootButton: UIView {
                 return
             }
             p_process = newValue
+			
+			setNeedsDisplay()
+			
+			if newValue == 0 {
+				minorPoint.isHidden = true
+			} else if minorPoint.isHidden && newValue > 0.001 {
+				minorPoint.isHidden = false
+			}
         }
     }
-	var minProcess: CGFloat?
+	
+	private var p_minProcess:CGFloat = 0
+	var minProcess: CGFloat {
+		get {
+			return p_minProcess
+		}
+		set {
+			if p_minProcess == newValue {
+				return
+			}
+			p_minProcess = newValue
+			minorPoint.center = minorPointCenter()
+		}
+	}
+	
 	var pauseAngles: Array<CGFloat>?
-	var minDuration: Float?
-	var maxDuration: Float?
+	var minDuration: CGFloat = 3
+	var maxDuration: CGFloat = 15
 	
     fileprivate var innerCircle: UIView {
         let circle = UIView()
@@ -66,23 +88,124 @@ class HomeShootButton: UIView {
 		let width = kNormalRadius + kLineWidth / 2
 		super.init(frame: CGRect(x: center.x - width, y: center.y - width, width: width * 2, height: width * 2))
 		
-        
+        setupUI()
+		minProcess = 0.2
+		minorPoint.center = minorPointCenter()
+		minorPoint.isHidden = true
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
     
-    func setupUI() {
+    fileprivate func setupUI() {
         innerCircle.size = CGSize(width: kRecordRadius, height: kRecordRadius)
         innerCircle.layer.cornerRadius = innerCircle.width / 2
+		addSubview(innerCircle)
         
         pauseSupportLayer.frame = CGRect(x: kNormalRadius - 1, y: -1, width: 2, height: kNormalRadius * 2 + 2)
         pauseSupportLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         pauseSupportLayer.isHidden = true
+		layer.addSublayer(pauseSupportLayer)
         
         pauseIndicateLayer.frame = CGRect(x: 0, y: 0, width: 2, height: kLineWidth * kScaleValue + 1)
         pauseIndicateLayer.cornerRadius = 0.5
         pauseSupportLayer.addSublayer(pauseIndicateLayer)
     }
+	
+	fileprivate func minorPointCenter() -> CGPoint {
+		let width = kNormalRadius
+		let lineWidth = kLineWidth
+		let radius = width - lineWidth / 2
+		let angle = minProcess * 2 * CGFloat.pi
+		let centerX = width + CGFloat(sinf(Float(angle))) * radius
+		let centerY = width - CGFloat(cosf(Float(angle))) * radius
+		return CGPoint(x: centerX, y: centerY)
+	}
+	
+	override func draw(_ rect: CGRect) {
+		let ctx = UIGraphicsGetCurrentContext()
+		let width = kNormalRadius
+	}
+	
+	func resetStatus() {
+		pause(process: 0)
+		pauseAngles?.removeAll()
+		pauseSupportLayer.transform = CATransform3DIdentity
+		pauseSupportLayer.isHidden = true
+	}
+	
+	func pause(process: CGFloat) {
+		if pauseAngles == nil {
+			pauseAngles = Array()
+		}
+		self.process = process
+		pauseAngles!.append(process)
+		
+		UIView.animate(withDuration: 0.2, animations: {
+			self.innerCircle2SquareAnimation(bool: false)
+			self.transform = .identity
+		}) { (finished) in
+			self.pauseIndicateAnimation()
+		}
+	}
+	
+	fileprivate func innerCircle2SquareAnimation(bool: Bool, _ duration: CGFloat = 0.2) {
+		let squareWidth: CGFloat = 41
+		let groupAnimation = CAAnimationGroup()
+		let cornerAnimation = CABasicAnimation(keyPath: "cornerRadius")
+		cornerAnimation.toValue = NSNumber(value: bool ? 5 : kRecordRadius.float / 2)
+		let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+		scaleAnimation.toValue = NSNumber(value: bool ? (squareWidth * kScaleValue / kRecordRadius).float : 1)
+		
+		groupAnimation.animations = [cornerAnimation, scaleAnimation]
+		groupAnimation.duration = Double(duration)
+		groupAnimation.isRemovedOnCompletion = false
+		groupAnimation.fillMode = kCAFillModeForwards
+		innerCircle.layer.add(groupAnimation, forKey: nil)
+	}
+	
+	fileprivate func pauseIndicateAnimation() {
+		guard let pauseAngles = pauseAngles, pauseAngles.count > 0, process != 1 else {
+			pauseIndicateLayer.removeAllAnimations()
+			pauseSupportLayer.isHidden = true
+			return
+		}
+		
+		if process == 0 {
+			pauseSupportLayer.isHidden = true
+			return
+		} else if pauseSupportLayer.isHidden {
+			pauseSupportLayer.isHidden = false
+		}
+		pauseSupportLayer.transform = CATransform3DMakeRotation(pauseAngles.last! * 2 * CGFloat.pi, 0, 0, 1)
+		let groupAnimation = CAAnimationGroup()
+		let cornerAniamtion = CABasicAnimation(keyPath: "opacity")
+		cornerAniamtion.toValue = NSNumber(value: 1)
+		let scaleAnimation = CABasicAnimation(keyPath: "transform.scale")
+		scaleAnimation.toValue = NSNumber(value: 1.15)
+		
+		groupAnimation.animations = [cornerAniamtion, scaleAnimation]
+		groupAnimation.duration = 0.7
+		groupAnimation.repeatCount = MAXFLOAT
+		groupAnimation.isRemovedOnCompletion = false
+		groupAnimation.fillMode = kCAFillModeForwards
+		pauseIndicateLayer.add(groupAnimation, forKey: nil)
+	}
+	
+	func startAnimation() {
+		process = 0
+		pauseAngles?.removeAll()
+		resumeAnimation()
+	}
+	
+	func resumeAnimation() {
+		pauseSupportLayer.isHidden = true
+		pauseIndicateLayer.removeAllAnimations()
+		UIView.animate(withDuration: 0.2, animations: {
+			self.innerCircle2SquareAnimation(bool: true)
+			self.transform = CGAffineTransform(scaleX: 1 / self.kScaleValue, y: 1 / self.kScaleValue)
+		})
+	}
+	
 }
