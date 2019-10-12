@@ -126,6 +126,48 @@ class HomeShootButton: UIView {
 	override func draw(_ rect: CGRect) {
 		let ctx = UIGraphicsGetCurrentContext()
 		let width = kNormalRadius
+		let lineWidth = kLineWidth
+		let center = CGPoint(x: width + lineWidth / 2, y: width + lineWidth / 2)
+		let radius = width - lineWidth / 2
+		let startA = -CGFloat.pi / 2
+		let endA = startA + CGFloat.pi * 2 * process
+		
+		// 半透明圆环
+		let pathCircle = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
+		pathCircle.lineWidth = lineWidth
+		UIColorFromRGB(rgbValue: 0xffffff, alphaValue: 0.2).setStroke()
+		pathCircle.stroke()
+		
+		// 绿色圆环进度条
+		let path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startA, endAngle: endA, clockwise: true)
+		path.lineWidth = lineWidth
+		UIColorFromRGB(rgbValue: 0x16e05a, alphaValue: 1).setStroke()
+		path.stroke()
+		
+		// 暂停的白细条
+		if let pauseAngles = pauseAngles, pauseAngles.count > 0 {
+			for angle in pauseAngles {
+				let widthP: CGFloat = 4 / 360
+				let startP = CGFloat.pi * 2 * (angle - widthP) + startA
+				let endP = startP + (CGFloat.pi * 2 * widthP)
+				let pathP = UIBezierPath(arcCenter: center, radius: radius, startAngle: startP, endAngle: endP, clockwise: true)
+				UIColor.white.setStroke()
+				pathP.lineWidth = lineWidth
+				pathP.stroke()
+			}
+		}
+		
+		// 最小时间的绿细条
+		if process > 0.001 && process < minProcess {
+			let widthP: CGFloat = 2 / 360
+			let startP = CGFloat.pi * 2 * (minProcess - widthP) + startA
+			let endP = startP + (CGFloat.pi * 2 * widthP)
+			let pathP = UIBezierPath(arcCenter: center, radius: radius, startAngle: startP, endAngle: endP, clockwise: true)
+			UIColorFromRGB(rgbValue: 0x16e05a, alphaValue: 1).setStroke()
+			pathP.lineWidth = lineWidth
+			pathP.stroke()
+		}
+		ctx?.strokePath()
 	}
 	
 	func resetStatus() {
