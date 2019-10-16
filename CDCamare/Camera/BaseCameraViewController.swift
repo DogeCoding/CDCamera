@@ -75,7 +75,7 @@ class BaseCameraViewController: UIViewController {
     
     var cameraDevices: [AVCaptureDevice] {
         get {
-            return AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInWideAngleCamera], mediaType: .video, position: .unspecified).devices
+            return AVCaptureDevice.DiscoverySession(deviceTypes: [AVCaptureDevice.DeviceType.builtInDualCamera], mediaType: .video, position: .unspecified).devices
         }
     }
     

@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DD08810C21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD08810B21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift */; };
-		DD08814121F5B9590044E7DB /* GPUImage in Resources */ = {isa = PBXBuildFile; fileRef = DD08814021F5B9590044E7DB /* GPUImage */; };
-		DD08815321F5B9960044E7DB /* GPUImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD08814E21F5B9620044E7DB /* GPUImage.framework */; };
-		DD08815621F5BA330044E7DB /* GPUImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = DD08814E21F5B9620044E7DB /* GPUImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CDF12122B42D0054649E /* AppDelegate.swift */; };
 		DD15CDF72122B42D0054649E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF52122B42D0054649E /* Main.storyboard */; };
 		DD15CDF92122B42E0054649E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF82122B42E0054649E /* Assets.xcassets */; };
@@ -34,41 +31,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DD08814921F5B9620044E7DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC6E7CAB1C39A9D8006DF678;
-			remoteInfo = GPUImage_macOS;
-		};
-		DD08814B21F5B9620044E7DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC6E7CB51C39A9D8006DF678;
-			remoteInfo = GPUImageTests_macOS;
-		};
-		DD08814D21F5B9620044E7DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC9E34E91E524A2200B8604F;
-			remoteInfo = GPUImage_iOS;
-		};
-		DD08814F21F5B9620044E7DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BC9E34F11E524A2200B8604F;
-			remoteInfo = GPUImageTests_iOS;
-		};
-		DD08815121F5B96F0044E7DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = BC9E34E81E524A2200B8604F;
-			remoteInfo = GPUImage_iOS;
-		};
 		DD15CE032122B42F0054649E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DD15CDE62122B42D0054649E /* Project object */;
@@ -92,7 +54,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				DD08815621F5BA330044E7DB /* GPUImage.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -102,8 +63,6 @@
 		323DA99B1363FD139E2EDC9A /* Pods-CDCamare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDCamare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CDCamare/Pods-CDCamare.debug.xcconfig"; sourceTree = "<group>"; };
 		582B8B7E7F6D0249977B5993 /* Pods_CDCamare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CDCamare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD08810B21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUImageBaseCameraVC.swift; sourceTree = "<group>"; };
-		DD08814021F5B9590044E7DB /* GPUImage */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GPUImage; sourceTree = "<group>"; };
-		DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = Vender/GPUImage/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		DD15CDEE2122B42D0054649E /* CDCamare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDCamare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CDF12122B42D0054649E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD15CDF62122B42D0054649E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -117,6 +76,12 @@
 		DD15CE112122B42F0054649E /* CDCamareUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CDCamareUITests.swift; sourceTree = "<group>"; };
 		DD15CE132122B42F0054649E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD2F83D421A7A4AF00345D1E /* BaseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseButton.swift; sourceTree = "<group>"; };
+		DD3D034823547A9E00C06168 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		DD3D034A23547AAD00C06168 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		DD3D034C23547AB200C06168 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		DD3D034E23547ABC00C06168 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		DD3D035023547AC500C06168 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DD3D035223547AD400C06168 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		DD4637C621AE9D640065CACB /* HomeTopSupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTopSupportView.swift; sourceTree = "<group>"; };
 		DD543B3221BCC2CD0078FA4E /* SegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentView.swift; sourceTree = "<group>"; };
 		DD628E9F2199AD75000B247F /* CDCamare-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CDCamare-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -139,7 +104,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD08815321F5B9960044E7DB /* GPUImage.framework in Frameworks */,
 				DEE84305E0A52811D10FA71D /* Pods_CDCamare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,6 +128,12 @@
 		7095465FCC18040E17D89A64 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD3D035223547AD400C06168 /* MobileCoreServices.framework */,
+				DD3D035023547AC500C06168 /* QuartzCore.framework */,
+				DD3D034E23547ABC00C06168 /* OpenGLES.framework */,
+				DD3D034C23547AB200C06168 /* AVFoundation.framework */,
+				DD3D034A23547AAD00C06168 /* CoreMedia.framework */,
+				DD3D034823547A9E00C06168 /* CoreVideo.framework */,
 				582B8B7E7F6D0249977B5993 /* Pods_CDCamare.framework */,
 			);
 			name = Frameworks;
@@ -181,20 +151,8 @@
 		DD08813F21F5B9340044E7DB /* Vender */ = {
 			isa = PBXGroup;
 			children = (
-				DD08814021F5B9590044E7DB /* GPUImage */,
 			);
 			path = Vender;
-			sourceTree = "<group>";
-		};
-		DD08814321F5B9620044E7DB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DD08814A21F5B9620044E7DB /* GPUImage.framework */,
-				DD08814C21F5B9620044E7DB /* GPUImageTests_macOS.xctest */,
-				DD08814E21F5B9620044E7DB /* GPUImage.framework */,
-				DD08815021F5B9620044E7DB /* GPUImageTests_iOS.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		DD15CDE52122B42D0054649E = {
@@ -223,7 +181,6 @@
 			isa = PBXGroup;
 			children = (
 				DDFDB8CB22154CFE00D7003E /* Resources */,
-				DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */,
 				DD628EA62199AE74000B247F /* Common */,
 				DD628EA52199AE5F000B247F /* Home */,
 				DD08810D21F5B3C20044E7DB /* Camera */,
@@ -332,7 +289,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				DD08815221F5B96F0044E7DB /* PBXTargetDependency */,
 			);
 			name = CDCamare;
 			productName = CDCamare;
@@ -410,12 +366,6 @@
 			mainGroup = DD15CDE52122B42D0054649E;
 			productRefGroup = DD15CDEF2122B42D0054649E /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = DD08814321F5B9620044E7DB /* Products */;
-					ProjectRef = DD08814221F5B9620044E7DB /* GPUImage.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				DD15CDED2122B42D0054649E /* CDCamare */,
@@ -425,37 +375,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		DD08814A21F5B9620044E7DB /* GPUImage.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GPUImage.framework;
-			remoteRef = DD08814921F5B9620044E7DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DD08814C21F5B9620044E7DB /* GPUImageTests_macOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests_macOS.xctest;
-			remoteRef = DD08814B21F5B9620044E7DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DD08814E21F5B9620044E7DB /* GPUImage.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = GPUImage.framework;
-			remoteRef = DD08814D21F5B9620044E7DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DD08815021F5B9620044E7DB /* GPUImageTests_iOS.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GPUImageTests_iOS.xctest;
-			remoteRef = DD08814F21F5B9620044E7DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		DD15CDEC2122B42D0054649E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -464,7 +383,6 @@
 				DD15CDFC2122B42E0054649E /* LaunchScreen.storyboard in Resources */,
 				DD15CDF92122B42E0054649E /* Assets.xcassets in Resources */,
 				DD15CDF72122B42D0054649E /* Main.storyboard in Resources */,
-				DD08814121F5B9590044E7DB /* GPUImage in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +413,7 @@
 				"${BUILT_PRODUCTS_DIR}/CDAdditions/CDAdditions.framework",
 				"${BUILT_PRODUCTS_DIR}/CRToast/CRToast.framework",
 				"${BUILT_PRODUCTS_DIR}/FLEX/FLEX.framework",
+				"${BUILT_PRODUCTS_DIR}/GPUImage/GPUImage.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -510,6 +429,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CDAdditions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CRToast.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLEX.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GPUImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -587,11 +507,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DD08815221F5B96F0044E7DB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = GPUImage_iOS;
-			targetProxy = DD08815121F5B96F0044E7DB /* PBXContainerItemProxy */;
-		};
 		DD15CE042122B42F0054649E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = DD15CDED2122B42D0054649E /* CDCamare */;
@@ -748,12 +663,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77VA832VG5;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CDCamare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = J475J568UV.com.games.zsta.binguo;
+				PRODUCT_BUNDLE_IDENTIFIER = codingdoge.appID.CDCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";
@@ -773,12 +689,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77VA832VG5;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = CDCamare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = J475J568UV.com.games.zsta.binguo;
+				PRODUCT_BUNDLE_IDENTIFIER = codingdoge.appID.CDCamera;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "CDCamare/CDCamare-Bridging-Header.h";

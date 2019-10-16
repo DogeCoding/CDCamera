@@ -17,6 +17,7 @@ target 'CDCamare' do
     pod 'FLEX', '~> 2.0', :configurations => ['Debug']
     pod 'CRToast', '~> 0.0.7'
     pod 'TZImagePickerController'
+    pod 'GPUImage'
 
 	post_install do |installer|
 	  installer.pods_project.targets.each do |target|
