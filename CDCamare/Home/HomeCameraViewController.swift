@@ -11,7 +11,17 @@ import TZImagePickerController
 class HomeCameraViewController: BaseCameraViewController {
     
     fileprivate var switchCameraBtn: BaseButton?
-    fileprivate var shootButton: BaseButton?
+	fileprivate var shootButton: HomeShootButton {
+		let button = HomeShootButton(center: CGPoint(x: ScreenWidth / 2, y: ScreenHeight - 80))
+		button.minDuration = videoMinDuration
+		button.maxDuration = videoMaxDuration
+		button.minProcess = videoMinDuration / videoMaxDuration
+		let singleClick = UITapGestureRecognizer(target: self, action: #selector(captureHandler(_:)))
+		let longTap = UILongPressGestureRecognizer(target: self, action: #selector(captureHandler(_:)))
+		button.addGestureRecognizer(singleClick)
+		button.addGestureRecognizer(longTap)
+		return button
+	}
     fileprivate lazy var imageView = UIImageView()
     
     fileprivate var topControlView: HomeTopControlView?
@@ -33,7 +43,12 @@ class HomeCameraViewController: BaseCameraViewController {
         view.isHidden = true
         return view
     }()
+	
+	fileprivate let videoMaxDuration: CGFloat = 60		// 拍摄最长时长
+	fileprivate let videoMinDuration: CGFloat = 3		// 拍摄最短时长
+	fileprivate var isRecording: Bool = false
     
+	// MARK: - Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -42,6 +57,7 @@ class HomeCameraViewController: BaseCameraViewController {
         setupBottomControl()
     }
     
+	// MARK: - UI
     fileprivate func setupCommonUI() {
         view.backgroundColor = .white
         
@@ -83,17 +99,18 @@ class HomeCameraViewController: BaseCameraViewController {
         view.addSubview(bottomSegmentView)
 		currentBottomTitleIndex = 0;
 		
-		shootButton = BaseButton(type: .custom)
-        shootButton?.setImage(UIImage(named: "camera_switch"), for: .normal)
-        shootButton?.size = CGSize(width: 30, height: 30)
-        shootButton?.bottom = view.height - 60
-        shootButton?.centerX = view.centerX
-		shootButton?.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
-        view.addSubview(shootButton!)
+		let _shootButton = BaseButton()
+        _shootButton.setImage(UIImage(named: "camera_switch"), for: .normal)
+        _shootButton.size = CGSize(width: 30, height: 30)
+        _shootButton.bottom = view.height - 60
+        _shootButton.centerX = view.centerX
+		_shootButton.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+        view.addSubview(_shootButton)
 		
 //        addChildViewController(privateCameraVC)
     }
     
+	// MARK: - Capture
     override func capturedImageHandler() {
         guard let capturedImage = capturedImage else { return }
         imageView.image = capturedImage
@@ -101,6 +118,18 @@ class HomeCameraViewController: BaseCameraViewController {
         imageView.isUserInteractionEnabled = true
         view.bringSubview(toFront: imageView)
     }
+	
+	fileprivate func startRecord() {
+		record()
+	}
+	
+	fileprivate func pauseRecord() {
+		
+	}
+	
+	fileprivate func finishRecord() {
+		
+	}
     
     // MARK: - Actions
     @objc fileprivate func imageViewTapGesture() {
@@ -128,6 +157,22 @@ class HomeCameraViewController: BaseCameraViewController {
             self.focusView.isHidden = true
         }
     }
+	
+	@objc fileprivate func captureHandler(recognizer: UIGestureRecognizer) {
+		if recognizer is UITapGestureRecognizer {
+			if isRecording {
+				
+			} else {
+				
+			}
+		} else if recognizer is UILongPressGestureRecognizer {
+			if recognizer.state == .began && !isRecording {
+				
+			} else if (recognizer.state == .ended || recognizer.state == .cancelled) && isRecording {
+				
+			}
+		}
+	}
 }
 
 extension HomeCameraViewController: HomeTopControlViewDelegate {
@@ -187,13 +232,13 @@ extension HomeCameraViewController: SegmentViewDelegate {
 		}
 		currentBottomTitleIndex = index
         switch index {
-        case 0:
-			shootButton?.removeTarget(self, action: #selector(record), for: .touchUpInside)
-			shootButton?.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
-			
-        case 1:
-			shootButton?.removeTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
-			shootButton?.addTarget(self, action: #selector(record), for: .touchUpInside)
+//        case 0:
+//			shootButton?.removeTarget(self, action: #selector(record), for: .touchUpInside)
+//			shootButton?.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+//
+//        case 1:
+//			shootButton?.removeTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+//			shootButton?.addTarget(self, action: #selector(record), for: .touchUpInside)
             
         default: break
             

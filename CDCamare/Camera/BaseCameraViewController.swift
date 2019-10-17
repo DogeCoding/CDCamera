@@ -192,6 +192,12 @@ class BaseCameraViewController: UIViewController {
         previewVideoLayer?.anchorPoint = .zero
         previewVideoLayer?.bounds = view.bounds
         view.layer.insertSublayer(previewVideoLayer!, at: 0)
+		
+		let connection = videoOutput.connection(with: .video)
+		connection?.videoOrientation = .portrait
+		if let bool = connection?.isVideoMirroringSupported, bool {
+			connection?.isVideoMirrored = true
+		}
         
         // 人脸检测
         let metadataOutput = AVCaptureMetadataOutput()
@@ -217,12 +223,12 @@ class BaseCameraViewController: UIViewController {
         gridLayer = CALayer()
         let layerWidth = view.width
         let layerHeight = layerWidth * videoScale
-        gridLayer?.frame = CGRect(x: 0, y: (view.height - layerHeight)/2, width: layerWidth, height: layerHeight)
+        gridLayer?.frame = CGRect(x: 0, y: (view.height - layerHeight) / 2, width: layerWidth, height: layerHeight)
         let lineWidth: CGFloat = 1 / ScreenScale
-        gridLine(withFrame: CGRect(x: (view.width - 2*lineWidth)/3 , y: 0, width: lineWidth, height: layerHeight))
-        gridLine(withFrame: CGRect(x: (view.width - 2*lineWidth)/3*2.0 + lineWidth, y: 0, width: lineWidth, height: layerHeight))
-        gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2*lineWidth)/3, width: view.width, height: lineWidth))
-        gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2*lineWidth)/3*2.0, width: view.width, height: lineWidth))
+        gridLine(withFrame: CGRect(x: (view.width - 2 * lineWidth) / 3 , y: 0, width: lineWidth, height: layerHeight))
+        gridLine(withFrame: CGRect(x: (view.width - 2 * lineWidth) / 3 * 2.0 + lineWidth, y: 0, width: lineWidth, height: layerHeight))
+        gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2 * lineWidth) / 3, width: view.width, height: lineWidth))
+        gridLine(withFrame: CGRect(x: 0, y: (layerHeight - 2 * lineWidth) / 3 * 2.0, width: view.width, height: lineWidth))
         
         view.layer.addSublayer(gridLayer!)
     }
@@ -628,7 +634,7 @@ class BaseCameraViewController: UIViewController {
         }
     }
     
-    // MARK: --- Notification ---
+    // MARK: - Notification
     @objc func applicationWillResignActive() {
         
     }
@@ -650,7 +656,7 @@ class BaseCameraViewController: UIViewController {
     }
     
     
-    // MARK: --- Public ---
+    // MARK: - Public
     func capturedImageHandler() {
         
     }
@@ -720,7 +726,7 @@ extension BaseCameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate
             
             let orientation = UIDevice.current.orientation
             var transform: CGAffineTransform!
-            
+
             switch orientation {
             case .portrait:
                 transform = CGAffineTransform(rotationAngle: CGFloat(-.pi / 2.0))
@@ -731,7 +737,7 @@ extension BaseCameraViewController: AVCaptureVideoDataOutputSampleBufferDelegate
             default:
                 transform = CGAffineTransform(rotationAngle: 0)
             }
-            
+
             outputImage = outputImage.transformed(by: transform)
             
             let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
