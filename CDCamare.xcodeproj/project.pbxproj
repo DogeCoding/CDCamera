@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		DD08810C21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD08810B21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift */; };
+		DD11B23123595CA1006D6140 /* HomeBottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B23023595CA1006D6140 /* HomeBottomPanel.swift */; };
+		DD11B2362359B3F6006D6140 /* iToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B2352359B3F6006D6140 /* iToast.swift */; };
+		DD11B2382359B403006D6140 /* FPSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B2372359B403006D6140 /* FPSView.swift */; };
 		DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CDF12122B42D0054649E /* AppDelegate.swift */; };
 		DD15CDF72122B42D0054649E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF52122B42D0054649E /* Main.storyboard */; };
 		DD15CDF92122B42E0054649E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF82122B42E0054649E /* Assets.xcassets */; };
@@ -63,6 +66,9 @@
 		323DA99B1363FD139E2EDC9A /* Pods-CDCamare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CDCamare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CDCamare/Pods-CDCamare.debug.xcconfig"; sourceTree = "<group>"; };
 		582B8B7E7F6D0249977B5993 /* Pods_CDCamare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CDCamare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD08810B21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUImageBaseCameraVC.swift; sourceTree = "<group>"; };
+		DD11B23023595CA1006D6140 /* HomeBottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomPanel.swift; sourceTree = "<group>"; };
+		DD11B2352359B3F6006D6140 /* iToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iToast.swift; sourceTree = "<group>"; };
+		DD11B2372359B403006D6140 /* FPSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FPSView.swift; sourceTree = "<group>"; };
 		DD15CDEE2122B42D0054649E /* CDCamare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDCamare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CDF12122B42D0054649E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD15CDF62122B42D0054649E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -242,6 +248,8 @@
 				DD628EA82199AE94000B247F /* BaseNavigationViewController.swift */,
 				DD2F83D421A7A4AF00345D1E /* BaseButton.swift */,
 				DD543B3221BCC2CD0078FA4E /* SegmentView.swift */,
+				DD11B2352359B3F6006D6140 /* iToast.swift */,
+				DD11B2372359B403006D6140 /* FPSView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -252,6 +260,7 @@
 				DDA98C4E21AA514E008D4AAC /* HomeTopControlView.swift */,
 				DD4637C621AE9D640065CACB /* HomeTopSupportView.swift */,
 				DD9EF2FA2333758A00307A1D /* HomeShootButton.swift */,
+				DD11B23023595CA1006D6140 /* HomeBottomPanel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -472,18 +481,21 @@
 			files = (
 				DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */,
 				DDFDB8C82215462B00D7003E /* PrivateCameraViewController.swift in Sources */,
+				DD11B2382359B403006D6140 /* FPSView.swift in Sources */,
 				DD9EF2FB2333758B00307A1D /* HomeShootButton.swift in Sources */,
 				DD79B5C021A5427200003C92 /* Helper.swift in Sources */,
 				DD628EB7219AF92D000B247F /* BaseCameraViewController.swift in Sources */,
 				DD2F83D521A7A4AF00345D1E /* BaseButton.swift in Sources */,
 				DD628EAD2199AF6A000B247F /* MacroFile.swift in Sources */,
 				DD4637C721AE9D640065CACB /* HomeTopSupportView.swift in Sources */,
+				DD11B2362359B3F6006D6140 /* iToast.swift in Sources */,
 				DDFDB8C42215454400D7003E /* HomeCameraViewController.swift in Sources */,
 				DDA98C4F21AA514E008D4AAC /* HomeTopControlView.swift in Sources */,
 				DD08810C21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift in Sources */,
 				DDFDB8C32215454400D7003E /* RootViewController.swift in Sources */,
 				DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */,
 				DD543B3321BCC2CD0078FA4E /* SegmentView.swift in Sources */,
+				DD11B23123595CA1006D6140 /* HomeBottomPanel.swift in Sources */,
 				DDA53A1F21A64A4E007986D8 /* AuthenticationHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

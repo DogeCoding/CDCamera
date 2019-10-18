@@ -8,7 +8,7 @@
 
 let RootNavigation = RootViewController.shared.navigationController
 
-// MARK: --- UI ---
+// MARK: - UI
 func UIColorFromRGB(rgbValue: Int) -> UIColor {
     return UIColorFromRGB(rgbValue: rgbValue, alphaValue: 1)
 }
@@ -31,9 +31,11 @@ let ScreenWidth = UIScreen.main.bounds.size.width
 let ScreenHeight = UIScreen.main.bounds.size.height
 let ScreenScale = UIScreen.main.scale
 
-// MARK: --- Memory ---
 
-// MARK: --- Multithreading ---
+
+// MARK: - Memory
+
+// MARK: - Multithreading
 func dispatch_safe_main_async(_ completionHandler: @escaping () -> ()) {
     if Thread.isMainThread {
         completionHandler()
@@ -53,3 +55,10 @@ func OnMainThreadAsync(_ completionHandler: @escaping () -> ()) {
         }
     }
 }
+
+// MARK: - Tool
+public let DeviceUUID = NSUUID().uuidString
+
+public let IsIphone_X = UIDevice.current.
+
+public let BBSCurrentSystemVersion: CGFloat = StringToCGFloat(UIDevice.current.systemVersion)

@@ -11,21 +11,11 @@ import TZImagePickerController
 class HomeCameraViewController: BaseCameraViewController {
     
     fileprivate var switchCameraBtn: BaseButton?
-	fileprivate var shootButton: HomeShootButton {
-		let button = HomeShootButton(center: CGPoint(x: ScreenWidth / 2, y: ScreenHeight - 80))
-		button.minDuration = videoMinDuration
-		button.maxDuration = videoMaxDuration
-		button.minProcess = videoMinDuration / videoMaxDuration
-		let singleClick = UITapGestureRecognizer(target: self, action: #selector(captureHandler(_:)))
-		let longTap = UILongPressGestureRecognizer(target: self, action: #selector(captureHandler(_:)))
-		button.addGestureRecognizer(singleClick)
-		button.addGestureRecognizer(longTap)
-		return button
-	}
     fileprivate lazy var imageView = UIImageView()
     
     fileprivate var topControlView: HomeTopControlView?
     fileprivate var topSupportView: HomeTopSupportView?
+	fileprivate var bottomPanel: HomeBottomPanel?
     
     fileprivate var privateCameraVC = PrivateCameraViewController()
     
@@ -46,7 +36,6 @@ class HomeCameraViewController: BaseCameraViewController {
 	
 	fileprivate let videoMaxDuration: CGFloat = 60		// 拍摄最长时长
 	fileprivate let videoMinDuration: CGFloat = 3		// 拍摄最短时长
-	fileprivate var isRecording: Bool = false
     
 	// MARK: - Life Circle
     override func viewDidLoad() {
@@ -99,15 +88,23 @@ class HomeCameraViewController: BaseCameraViewController {
         view.addSubview(bottomSegmentView)
 		currentBottomTitleIndex = 0;
 		
-		let _shootButton = BaseButton()
-        _shootButton.setImage(UIImage(named: "camera_switch"), for: .normal)
-        _shootButton.size = CGSize(width: 30, height: 30)
-        _shootButton.bottom = view.height - 60
-        _shootButton.centerX = view.centerX
-		_shootButton.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
-        view.addSubview(_shootButton)
+//		let _shootButton = BaseButton()
+//        _shootButton.setImage(UIImage(named: "camera_switch"), for: .normal)
+//        _shootButton.size = CGSize(width: 30, height: 30)
+//        _shootButton.bottom = view.height - 60
+//        _shootButton.centerX = view.centerX
+//		_shootButton.addTarget(self, action: #selector(captureImage(sender:)), for: .touchUpInside)
+//        view.addSubview(_shootButton)
 		
 //        addChildViewController(privateCameraVC)
+		
+		let panelFrame = CGRect(x: 0,
+								y: ScreenHeight - (34 * 2 + 58) - view.safeAreaInsets.bottom,
+								width: ScreenWidth,
+								height: 34 * 2 + 58 + view.safeAreaInsets.bottom)
+		bottomPanel = HomeBottomPanel(frame: panelFrame, minDuration: videoMinDuration, maxDuration: videoMaxDuration)
+		bottomPanel?.delegate = self
+		view.addSubview(bottomPanel!)
     }
     
 	// MARK: - Capture
@@ -118,18 +115,6 @@ class HomeCameraViewController: BaseCameraViewController {
         imageView.isUserInteractionEnabled = true
         view.bringSubview(toFront: imageView)
     }
-	
-	fileprivate func startRecord() {
-		record()
-	}
-	
-	fileprivate func pauseRecord() {
-		
-	}
-	
-	fileprivate func finishRecord() {
-		
-	}
     
     // MARK: - Actions
     @objc fileprivate func imageViewTapGesture() {
@@ -157,22 +142,6 @@ class HomeCameraViewController: BaseCameraViewController {
             self.focusView.isHidden = true
         }
     }
-	
-	@objc fileprivate func captureHandler(recognizer: UIGestureRecognizer) {
-		if recognizer is UITapGestureRecognizer {
-			if isRecording {
-				
-			} else {
-				
-			}
-		} else if recognizer is UILongPressGestureRecognizer {
-			if recognizer.state == .began && !isRecording {
-				
-			} else if (recognizer.state == .ended || recognizer.state == .cancelled) && isRecording {
-				
-			}
-		}
-	}
 }
 
 extension HomeCameraViewController: HomeTopControlViewDelegate {
@@ -254,4 +223,23 @@ extension HomeCameraViewController: TZImagePickerControllerDelegate {
     func imagePickerController(_ picker: TZImagePickerController!, didFinishPickingVideo coverImage: UIImage!, sourceAssets asset: PHAsset!) {
         
     }
+}
+
+
+extension HomeCameraViewController: HomeBottomPanelDelegate {
+	func panelStartRecord(panel: HomeBottomPanel, isLongPress: Bool) {
+		if isLongPress {
+			capturedImageHandler()
+		} else {
+			record()
+		}
+	}
+	
+	func panelPauseRecord(panel: HomeBottomPanel) {
+		
+	}
+	
+	func panelFinishRecord(panel: HomeBottomPanel) {
+		
+	}
 }
