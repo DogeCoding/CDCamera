@@ -57,7 +57,7 @@ class HomeShootButton: UIView {
 	
     fileprivate var innerCircle: UIView {
         let circle = UIView()
-        circle.backgroundColor = .white
+        circle.backgroundColor = .red
         circle.layer.masksToBounds = true
         return circle
     }
@@ -99,6 +99,8 @@ class HomeShootButton: UIView {
 	}
     
     fileprivate func setupUI() {
+		backgroundColor = .clear
+		
         innerCircle.size = CGSize(width: kRecordRadius, height: kRecordRadius)
         innerCircle.layer.cornerRadius = innerCircle.width / 2
 		addSubview(innerCircle)

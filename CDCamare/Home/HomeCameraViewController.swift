@@ -229,6 +229,7 @@ extension HomeCameraViewController: TZImagePickerControllerDelegate {
 extension HomeCameraViewController: HomeBottomPanelDelegate {
 	func panelStartRecord(panel: HomeBottomPanel, isLongPress: Bool) {
 		if isLongPress {
+			iToast("Photo").show()
 			capturedImageHandler()
 		} else {
 			record()

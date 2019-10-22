@@ -21,6 +21,8 @@ class HomeBottomPanel: UIView {
 	
 	fileprivate var shootButton: HomeShootButton?
 	
+	var currentDuration: CGFloat = 0
+	
 	weak var delegate: HomeBottomPanelDelegate?
 	
 	init(frame: CGRect, minDuration: CGFloat, maxDuration: CGFloat) {
@@ -46,13 +48,17 @@ class HomeBottomPanel: UIView {
 		let longTap = UILongPressGestureRecognizer(target: self, action: #selector(captureHandler(recognizer:)))
 		shootButton?.addGestureRecognizer(singleClick)
 		shootButton?.addGestureRecognizer(longTap)
+		
+		addSubview(shootButton!)
 	}
 	
 	fileprivate func startRecord(_ isLongPress: Bool) {
+		startAnimation()
 		delegate?.panelStartRecord(panel: self, isLongPress: isLongPress)
 	}
 	
 	fileprivate func pauseRecord() {
+		pauseAnimation()
 		delegate?.panelPauseRecord(panel: self)
 	}
 	
@@ -73,6 +79,24 @@ class HomeBottomPanel: UIView {
 			} else if (recognizer.state == .ended || recognizer.state == .cancelled) && isRecording {
 				pauseRecord()
 			}
+		}
+	}
+	
+	// MARK: - Public
+	func startAnimation() {
+		if currentDuration == 0 {
+			shootButton?.startAnimation()
+		} else {
+			shootButton?.resumeAnimation()
+		}
+	}
+	
+	func pauseAnimation() {
+		if currentDuration >= maxDuration {
+			currentDuration = maxDuration
+			shootButton?.pause(process: 1.0)
+		} else {
+			shootButton?.pause(process: currentDuration / (maxDuration > 0 ? maxDuration : currentDuration))
 		}
 	}
 }

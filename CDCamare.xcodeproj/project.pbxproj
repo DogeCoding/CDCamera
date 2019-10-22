@@ -11,6 +11,7 @@
 		DD11B23123595CA1006D6140 /* HomeBottomPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B23023595CA1006D6140 /* HomeBottomPanel.swift */; };
 		DD11B2362359B3F6006D6140 /* iToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B2352359B3F6006D6140 /* iToast.swift */; };
 		DD11B2382359B403006D6140 /* FPSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B2372359B403006D6140 /* FPSView.swift */; };
+		DD11B23B235ED5BA006D6140 /* DispatchQueue+OnceToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11B23A235ED5BA006D6140 /* DispatchQueue+OnceToken.swift */; };
 		DD15CDF22122B42D0054649E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD15CDF12122B42D0054649E /* AppDelegate.swift */; };
 		DD15CDF72122B42D0054649E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF52122B42D0054649E /* Main.storyboard */; };
 		DD15CDF92122B42E0054649E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD15CDF82122B42E0054649E /* Assets.xcassets */; };
@@ -69,6 +70,7 @@
 		DD11B23023595CA1006D6140 /* HomeBottomPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomPanel.swift; sourceTree = "<group>"; };
 		DD11B2352359B3F6006D6140 /* iToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iToast.swift; sourceTree = "<group>"; };
 		DD11B2372359B403006D6140 /* FPSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FPSView.swift; sourceTree = "<group>"; };
+		DD11B23A235ED5BA006D6140 /* DispatchQueue+OnceToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+OnceToken.swift"; sourceTree = "<group>"; };
 		DD15CDEE2122B42D0054649E /* CDCamare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CDCamare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD15CDF12122B42D0054649E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DD15CDF62122B42D0054649E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				DD628EAC2199AF6A000B247F /* MacroFile.swift */,
 				DD79B5BF21A5427200003C92 /* Helper.swift */,
 				DDA53A1E21A64A4E007986D8 /* AuthenticationHelper.swift */,
+				DD11B23A235ED5BA006D6140 /* DispatchQueue+OnceToken.swift */,
 				DD628EA72199AE82000B247F /* Views */,
 			);
 			path = Common;
@@ -491,6 +494,7 @@
 				DD11B2362359B3F6006D6140 /* iToast.swift in Sources */,
 				DDFDB8C42215454400D7003E /* HomeCameraViewController.swift in Sources */,
 				DDA98C4F21AA514E008D4AAC /* HomeTopControlView.swift in Sources */,
+				DD11B23B235ED5BA006D6140 /* DispatchQueue+OnceToken.swift in Sources */,
 				DD08810C21F5B3AD0044E7DB /* GPUImageBaseCameraVC.swift in Sources */,
 				DDFDB8C32215454400D7003E /* RootViewController.swift in Sources */,
 				DD628EA92199AE94000B247F /* BaseNavigationViewController.swift in Sources */,

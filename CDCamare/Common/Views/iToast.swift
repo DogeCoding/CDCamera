@@ -95,7 +95,7 @@ class iToast: NSObject {
     fileprivate var view: UIView
     fileprivate var text: String
     
-    init(withText: String) {
+    init(_ withText: String) {
         settings = iToastSettings.shared
         timer = Timer()
         view = UIView()
@@ -104,7 +104,7 @@ class iToast: NSObject {
     }
     
     class func makeText(_ _text: String) -> iToast {
-        return iToast(withText: _text)
+        return iToast(_text)
     }
     
     func set(gravity: iToastGravity, offsetLeft left: CGFloat, offsetTop top: CGFloat) {
@@ -171,11 +171,11 @@ class iToast: NSObject {
         btn.backgroundColor = UIColor(red: settings.bgRed, green: settings.bgGreen, blue: settings.bgBlue, alpha: settings.bgAlpha)
         btn.layer.cornerRadius = settings.cornerRadius
         var fixedOffset: CGFloat = 184
-        if IsIphone_X {
+        if IsiPhoneXSeries {
             fixedOffset = 220
         }
         
-        guard let window = BBSWindows.first else { return }
+        guard let window = Windows.first else { return }
         var point = CGPoint.zero
         switch settings.gravity {
         case .top:

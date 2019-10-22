@@ -15,7 +15,7 @@ enum CDCameraDeviceStatus {
 class BaseCameraViewController: UIViewController {
     
     lazy var captureSession = AVCaptureSession()
-    lazy var captureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .unspecified)
+    lazy var captureDevice = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .unspecified)
     
     // 是视频模式 否则live photo
     fileprivate var isVideoStatus = true
@@ -168,6 +168,7 @@ class BaseCameraViewController: UIViewController {
         
         photoOutput?.isHighResolutionCaptureEnabled = true
         photoOutput?.setPreparedPhotoSettingsArray([photoSetting!], completionHandler: nil)
+		
         
         videoOutput = AVCaptureVideoDataOutput()
         videoOutput?.videoSettings = [kCVPixelBufferPixelFormatTypeKey : kCVPixelFormatType_32BGRA] as [String : Any]
@@ -437,11 +438,11 @@ class BaseCameraViewController: UIViewController {
         var sessionPreset: AVCaptureSession.Preset!
         switch((height, width)) {
         case (640, 480):
-            sessionPreset = .hd1280x720
+            sessionPreset = .vga640x480
         case (1280, 720):
             sessionPreset = .hd1280x720
         default:
-            sessionPreset = .hd1280x720
+            sessionPreset = .hd4K3840x2160
         }
         if captureSession.canSetSessionPreset(sessionPreset) {
             captureSession.sessionPreset = sessionPreset
